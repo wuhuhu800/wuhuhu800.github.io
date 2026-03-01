@@ -1,117 +1,222 @@
 <!DOCTYPE html>
-<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#" class="han-init">
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <title>XGBoost 参数调优(python) &mdash; 问道</title>
-    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-css/css/primer.css">
-    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/primer-markdown/dist/user-content.min.css">
-    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/octicons/octicons/octicons.css">
-    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/collection.css">
-    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/repo-card.css">
-    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/repo-list.css">
-    <link rel="stylesheet" href="http://localhost:4000/assets/css/sections/mini-repo-list.css">
-    <link rel="stylesheet" href="http://localhost:4000/assets/css/components/boxed-group.css">
-    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/common.css">
-    <link rel="stylesheet" href="http://localhost:4000/assets/vendor/share.js/dist/css/share.min.css">
-    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/responsive.css">
-    <link rel="stylesheet" href="http://localhost:4000/assets/css/posts/index.css">
-    <!-- Latest compiled and minified CSS -->
+    <title>XGBoost 参数调优(python) — 问道</title>
+
+    <!-- 赛博朋克主题样式 -->
+    <link rel="stylesheet" href="http://0.0.0.0:4000/assets/css/cyberpunk-theme.css">
+
+    <!-- 字体 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    
+
+    <!-- SEO Meta Tags -->
+    <link rel="canonical" href="http://0.0.0.0:4000/2018/02/28/XGboost_param_share/">
+    <link rel="alternate" type="application/atom+xml" title="问道" href="http://0.0.0.0:4000/feed.xml">
+    <link rel="icon" type="image/svg+xml" href="http://0.0.0.0:4000/favicon.svg">
+    <link rel="alternate icon" href="http://0.0.0.0:4000/favicon.ico">
+
+    
+    <meta property="og:title" content="XGBoost 参数调优(python)">
+    
+    <meta name="keywords" content="机器学习,Xgboost,调参,python">
+    <meta name="og:keywords" content="机器学习,Xgboost,调参,python">
+    
+    <meta name="description" content="本篇初步探索了xgboost在调参数的方法">
+    <meta name="og:description" content="本篇初步探索了xgboost在调参数的方法">
+    
     
 
     
-    <link rel="canonical" href="http://localhost:4000/2018/02/28/XGboost_param_share/">
-    <link rel="alternate" type="application/atom+xml" title="问道" href="http://localhost:4000/feed.xml">
-    <link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
-    
-    <meta property="og:title" content="XGBoost 参数调优(python)">
-      
-    <meta name="keywords" content="机器学习,Xgboost,调参,python">
-    <meta name="og:keywords" content="机器学习,Xgboost,调参,python">
-      
-    <meta name="description" content="本篇初步探索了xgboost在调参数的方法">
-    <meta name="og:description" content="本篇初步探索了xgboost在调参数的方法">
-      
-    
-    
-        
-    
-    <meta property="og:url" content="http://localhost:4000/2018/02/28/XGboost_param_share/">
+
+    <meta property="og:url" content="http://0.0.0.0:4000/2018/02/28/XGboost_param_share/">
     <meta property="og:site_name" content="问道">
     <meta property="og:type" content="article">
     <meta property="og:locale" content="zh_CN" />
+
     
     <meta property="article:published_time" content="2018-02-28">
     
-    <script src="http://localhost:4000/assets/vendor/jquery/dist/jquery.min.js"></script>
-    <script src="http://localhost:4000/assets/js/jquery-ui.js"></script>
-    <script type="text/javascript">
-    function toggleMenu() {
-        var nav = document.getElementsByClassName("site-header-nav")[0];
-        if (nav.style.display == "inline-flex") {
-          nav.style.display = "none";
-        } else {
-          nav.style.display = "inline-flex";
-        }
-    }
-    </script>
+
+    <!-- PWA -->
+    <link rel="manifest" href="http://0.0.0.0:4000/manifest.json">
+    <meta name="theme-color" content="#0d1117">
+
+    <!-- 页面特定CSS -->
+    
+
+    <!-- Mermaid -->
+    
+
+    <!-- KaTeX -->
+    
 </head>
+
 <body class="" data-mz="">
+    <!-- 网格背景 -->
+    <div class="cyber-grid"></div>
+
+    <!-- 阅读进度条 -->
+    <div class="reading-progress" id="readingProgress" style="width: 0%"></div>
+
+    <!-- 头部导航 -->
     <header class="site-header">
-        <div class="container">
-            <h1><a href="http://localhost:4000/" title="问道"><span class="octicon octicon-mark-github"></span> 问道</a></h1>
-            <button class="collapsed mobile-visible" type="button" onclick="toggleMenu();">
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
+        <a href="http://0.0.0.0:4000/" class="site-logo" title="问道">
+            问道
+        </a>
+
+        <nav class="site-nav" role="navigation">
+            
+            <a href="http://0.0.0.0:4000/"
+               class=""
+               target="_self"
+               title="首页">
+                首页
+            </a>
+            
+            <a href="http://0.0.0.0:4000/categories/"
+               class=""
+               target="_self"
+               title="分类">
+                分类
+            </a>
+            
+            <a href="http://0.0.0.0:4000/wiki/"
+               class=""
+               target="_self"
+               title="维基">
+                维基
+            </a>
+            
+            <a href="http://0.0.0.0:4000/links/"
+               class=""
+               target="_self"
+               title="链接">
+                链接
+            </a>
+            
+            <a href="http://0.0.0.0:4000/about/"
+               class=""
+               target="_self"
+               title="关于">
+                关于
+            </a>
+            
+        </nav>
+
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <!-- 搜索框 -->
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" placeholder="搜索文章..." id="searchInput">
+            </div>
+
+            <!-- 主题切换 -->
+            <button class="theme-toggle" id="themeToggle" title="切换主题">🌙</button>
+
+            <!-- 移动端菜单按钮 -->
+            <button class="mobile-menu-btn" id="mobileMenuBtn" title="菜单">
+                <span></span>
+                <span></span>
+                <span></span>
             </button>
-            <nav class="site-header-nav" role="navigation">
-                
-                <a href="http://localhost:4000/" class=" site-header-nav-item" target="" title="首页">首页</a>
-                
-                <a href="http://localhost:4000/categories/" class=" site-header-nav-item" target="" title="分类">分类</a>
-                
-                <a href="http://localhost:4000/wiki/" class=" site-header-nav-item" target="" title="维基">维基</a>
-                
-                <a href="http://localhost:4000/links/" class=" site-header-nav-item" target="" title="链接">链接</a>
-                
-                <a href="http://localhost:4000/about/" class=" site-header-nav-item" target="" title="关于">关于</a>
-                
-            </nav>
         </div>
     </header>
     <!-- / header -->
 
-    <section class="collection-head small geopattern" data-pattern-id="XGBoost 参数调优(py">
-<div class="container">
-  <div class="columns">
-    <div class="column three-fourths">
-      <div class="collection-title">
-        <h1 class="collection-header">XGBoost 参数调优(python)</h1>
-        <div class="collection-info">
-          
-          <span class="meta-info">
-            <span class="octicon octicon-calendar"></span> 2018/02/28
-          </span>
-          
-          
-          <span class="meta-info">
-            <span class="octicon octicon-file-directory"></span>
-            <a href="http://localhost:4000/categories/#机器学习" title="机器学习">机器学习</a>
-          </span>
-          
+
+<main class="main-container">
+    <!-- 左侧边栏 -->
+    <aside class="sidebar sidebar-left">
+        <!-- 数据统计 -->
+        <div class="widget">
+            <div class="widget-title">📊 数据统计</div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value">12</div>
+                    <div class="stat-label">文章</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">12.5k</div>
+                    <div class="stat-label">阅读</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">1.2k</div>
+                    <div class="stat-label">点赞</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">89</div>
+                    <div class="stat-label">评论</div>
+                </div>
+            </div>
         </div>
-      </div>
+
+        <!-- 文章目录（文章页面显示） -->
+        
+        <div class="widget toc-widget">
+            <div class="widget-title">📑 文章目录</div>
+            <ul class="toc-list" id="tocList">
+                <li style="color: var(--text-muted);">加载中...</li>
+            </ul>
+        </div>
+        
+
+        <!-- 热门标签 -->
+        <div class="widget">
+            <div class="widget-title">🏷️ 热门标签</div>
+            <div class="tag-cloud">
+                <span class="tag">Python</span>
+                <span class="tag">AI</span>
+                <span class="tag">机器学习</span>
+                <span class="tag">深度学习</span>
+                <span class="tag">数据分析</span>
+                <span class="tag">OpenClaw</span>
+                <span class="tag">算法</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- 主内容区 -->
+    <div class="main-content">
+        <article class="article-header" data-id="/2018/02/28/XGboost_param_share">
+    <h1 class="article-title">XGBoost 参数调优(python)</h1>
+
+    <div class="article-meta">
+        
+        <span class="meta-item">
+            <span class="meta-icon">📅</span>
+            2018年02月28日
+        </span>
+        
+        <span class="meta-item">
+            <span class="meta-icon">⏱️</span>
+            <span class="reading-time">--</span> 分钟阅读
+        </span>
+        <span class="meta-item">
+            <span class="meta-icon">👁️</span>
+            60627 阅读
+        </span>
     </div>
-  </div>
-</div>
-</section>
-<!-- / .banner -->
-<section class="container content">
-<div class="columns">
-  <div class="column three-fourths" >
-    <article class="article-content markdown-body">
+
+    
+    <div class="article-tags">
+        
+        <span class="tag">#jekyll</span>
+        
+        
+        <a href="http://0.0.0.0:4000/categories/#机器学习" class="tag tag-cat">机器学习</a>
+        
+    </div>
+    
+</article>
+
+<article class="article-content" id="articleContent">
     <p>本篇初步探索了xgboost在调参数的方法</p>
 
 <p><strong>背景</strong>：数据科学里，首先要对数据特征的提取建模，然后用机器学习模拟预测。目前来说，工业界暂时不清楚，但是在只要涉及数据科学的比赛，机器学习模型肯定少补了Xgboost。Xgboost的参数非常繁多（50多个参数），本次主要介绍如何进行Xgboost调参</p>
@@ -651,12 +756,50 @@ Wall time: 12min 19s</p>
 
 <p><img src="https://user-images.githubusercontent.com/21167490/36014967-5400c830-0da7-11e8-8ac5-21b86d03050f.png" alt="xgb_train_tree" /></p>
 
-    </article>
-    <div class="share">
-      <div class="share-component"></div>
-    </div>
-    <div class="comment">
-      
+</article>
+
+<!-- 互动栏 -->
+<div class="interaction-bar" style="display: flex; justify-content: center; gap: 16px; margin: 40px 0; padding: 30px 0; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); flex-wrap: wrap;">
+    <button class="interaction-btn like-btn" data-post-id="/2018/02/28/XGboost_param_share">
+        <span class="btn-icon">❤️</span>
+        <span class="count">127</span>
+        <span class="btn-text">点赞</span>
+    </button>
+    <button class="interaction-btn bookmark-btn" data-post-id="/2018/02/28/XGboost_param_share">
+        <span class="btn-icon">⭐</span>
+        <span class="btn-text">收藏</span>
+    </button>
+    <button class="interaction-btn" id="commentBtn">
+        <span class="btn-icon">💬</span>
+        <span class="btn-text">评论</span>
+    </button>
+    <button class="interaction-btn share-btn" data-url="http://0.0.0.0:4000/2018/02/28/XGboost_param_share/">
+        <span class="btn-icon">🔗</span>
+        <span class="btn-text">分享</span>
+    </button>
+</div>
+
+<!-- 文章导航 -->
+<nav class="post-navigation">
+    
+    <a href="http://0.0.0.0:4000/2014/08/26/takephotos/" class="post-nav-item prev">
+        <span class="post-nav-label">← 上一篇</span>
+        <span class="post-nav-title">【转】摄影教训总结</span>
+    </a>
+    
+
+    
+    <a href="http://0.0.0.0:4000/2018/02/28/xgboost_parameters/" class="post-nav-item next">
+        <span class="post-nav-label">下一篇 →</span>
+        <span class="post-nav-title">XGBoost 参数官方文档翻译</span>
+    </a>
+    
+</nav>
+
+<!-- 评论区 -->
+<section class="comments-section" id="commentsSection" style="margin-top: 40px; padding-top: 40px; border-top: 1px solid var(--border-color);">
+    <h3 style="font-size: 20px; color: var(--accent-cyan); margin-bottom: 20px;">💬 评论</h3>
+    
 
   
 
@@ -680,130 +823,252 @@ Wall time: 12min 19s</p>
   
 
 
-    </div>
-  </div>
-  <div class="column one-fourth">
-    
-<h3>Search</h3>
-<div id="site_search">
-    <input type="text" id="search_box" placeholder="Search">
-</div>
+</section>
 
-<ul id="search_results"></ul>
+<script>
+    // 评论按钮平滑滚动
+    document.addEventListener('DOMContentLoaded', function() {
+        const commentBtn = document.getElementById('commentBtn');
+        if (commentBtn) {
+            commentBtn.addEventListener('click', function() {
+                const commentsSection = document.getElementById('commentsSection');
+                if (commentsSection) {
+                    commentsSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        }
 
-<link rel="stylesheet" type="text/css" href="http://localhost:4000/assets/css/modules/sidebar-search.css">
-<script src="http://localhost:4000/assets/js/jekyll-search.min.js"></script>
-<script src="http://localhost:4000/assets/js/search.js"></script>
+        // 计算阅读时间
+        const articleContent = document.getElementById('articleContent');
+        if (articleContent) {
+            const text = articleContent.textContent || '';
+            const chineseChars = text.match(/[\u4e00-\u9fa5]/g) || [];
+            const wordCount = chineseChars.length + (text.match(/[a-zA-Z]+/g) || []).length;
+            const minutes = Math.max(1, Math.ceil(wordCount / 300));
 
-<script type="text/javascript">
-SimpleJekyllSearch({
-    searchInput: document.getElementById('search_box'),
-    resultsContainer: document.getElementById('search_results'),
-    json: 'http://localhost:4000/assets/search_data.json',
-    searchResultTemplate: '<li><a href="{url}" title="{desc}">{title}</a></li>',
-    noResultsText: 'No results found',
-    limit: 10,
-    fuzzy: false,
-    exclude: ['Welcome']
-})
+            const readingTimeEl = document.querySelector('.reading-time');
+            if (readingTimeEl) {
+                readingTimeEl.textContent = minutes;
+            }
+        }
+    });
 </script>
 
-    
+    </div>
 
-    
-<h3 class="post-directory-title mobile-hidden">Table of Contents</h3>
-<div id="post-directory-module" class="mobile-hidden">
-  <section class="post-directory">
-  <!-- Links that trigger the jumping -->
-  <!-- Added by javascript below -->
-  <dl></dl>
-  </section>
-</div>
+    <!-- 右侧边栏 -->
+    <aside class="sidebar sidebar-right">
+        <!-- 作者信息 -->
+        <div class="widget author-card">
+            <div class="author-avatar">
+                H
+            </div>
+            <div class="author-name">Hu Wu</div>
+            <div class="author-bio">
+                阿虎的个人博客 - 记录技术成长之路，分享AI时代的新知与洞见
+            </div>
+            <div class="author-social">
+                <a href="https://github.com/wuhuhu800" class="social-link" target="_blank" title="GitHub">G</a>
+                <a href="mailto:gwuhuhu800@gmail.com" class="social-link" title="Email">@</a>
+                <a href="http://0.0.0.0:4000/feed.xml" class="social-link" title="RSS">R</a>
+            </div>
+        </div>
 
-<script src="http://localhost:4000/assets/js/jquery.toc.js"></script>
+        <!-- 相关文章（文章页面显示） -->
+        
+        <div class="widget">
+            <div class="widget-title">📚 相关文章</div>
+            <ul class="related-posts">
+                
+            </ul>
+        </div>
+        
 
-  </div>
-</div>
-</section>
-<!-- /section.content -->
+        <!-- 热门文章 -->
+        <div class="widget">
+            <div class="widget-title">🔥 热门文章</div>
+            <ul class="related-posts">
+                
+                <li class="related-post">
+                    <a href="http://0.0.0.0:4000/2026/03/01/AI_Agent-earn-money/">Ai_agent Earn Money</a>
+                    <div class="related-post-meta">2026年03月</div>
+                </li>
+                
+                <li class="related-post">
+                    <a href="http://0.0.0.0:4000/2018/10/27/find_copy/">对比两篇文章重复度</a>
+                    <div class="related-post-meta">2018年10月</div>
+                </li>
+                
+                <li class="related-post">
+                    <a href="http://0.0.0.0:4000/2018/10/07/taobao_pic/">淘宝商品详情页图片抓取</a>
+                    <div class="related-post-meta">2018年10月</div>
+                </li>
+                
+                <li class="related-post">
+                    <a href="http://0.0.0.0:4000/2018/07/09/Rubik's-Cube/">三阶魔方新手教程</a>
+                    <div class="related-post-meta">2018年07月</div>
+                </li>
+                
+                <li class="related-post">
+                    <a href="http://0.0.0.0:4000/2018/06/26/pic2pdf/">图片批量转pdf</a>
+                    <div class="related-post-meta">2018年06月</div>
+                </li>
+                
+            </ul>
+        </div>
 
-    <footer class="container">
-        <div class="site-footer" role="contentinfo">
-            <div class="copyright left mobile-block">
-                    © 2015
-                    <span title="Hu Wu">Hu Wu</span>
-                    <a href="javascript:window.scrollTo(0,0)" class="right mobile-visible">TOP</a>
+        <!-- GitHub活动 -->
+        <div class="widget">
+            <div class="widget-title">💻 GitHub</div>
+            <div style="text-align: center; padding: 10px;">
+                <img src="https://ghchart.rshah.org/wuhuhu800"
+                     alt="GitHub Contributions"
+                     style="width: 100%; border-radius: 8px; opacity: 0.8;"
+                     onerror="this.style.display='none'">
+            </div>
+        </div>
+    </aside>
+</main>
+
+    <!-- 悬浮功能按钮 -->
+    <div class="floating-panel">
+        <button class="feature-btn" id="settingsBtn" title="阅读设置">⚙️</button>
+        <button class="feature-btn" id="ttsToggleBtn" title="语音朗读">🔊</button>
+        <button class="feature-btn" id="shareBtn" title="分享文章">📤</button>
+    </div>
+
+    <!-- 设置面板 -->
+    <div class="settings-panel" id="settingsPanel">
+        <div class="setting-item">
+            <div class="setting-label">字体大小</div>
+            <div class="setting-options">
+                <button class="setting-btn" data-setting="fontSize" data-value="small">小</button>
+                <button class="setting-btn active" data-setting="fontSize" data-value="medium">中</button>
+                <button class="setting-btn" data-setting="fontSize" data-value="large">大</button>
+            </div>
+        </div>
+        <div class="setting-item">
+            <div class="setting-label">行宽</div>
+            <div class="setting-options">
+                <button class="setting-btn" data-setting="lineWidth" data-value="narrow">窄</button>
+                <button class="setting-btn active" data-setting="lineWidth" data-value="medium">中</button>
+                <button class="setting-btn" data-setting="lineWidth" data-value="wide">宽</button>
+            </div>
+        </div>
+        <div class="setting-item">
+            <div class="setting-label">行高</div>
+            <div class="setting-options">
+                <button class="setting-btn" data-setting="lineHeight" data-value="compact">紧凑</button>
+                <button class="setting-btn active" data-setting="lineHeight" data-value="comfortable">舒适</button>
+                <button class="setting-btn" data-setting="lineHeight" data-value="relaxed">宽松</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TTS面板 -->
+    <div class="tts-panel" id="ttsPanel">
+        <button class="tts-btn" id="ttsPrev" title="上一段">⏮</button>
+        <button class="tts-btn" id="ttsPlay" title="播放/暂停">▶</button>
+        <button class="tts-btn" id="ttsNext" title="下一段">⏭</button>
+        <div class="tts-progress">
+            <div class="tts-progress-bar" id="ttsProgressBar"></div>
+        </div>
+        <button class="tts-btn" id="ttsClose" title="关闭">✕</button>
+    </div>
+
+    <!-- AI助手 -->
+    <div class="ai-assistant" id="aiAssistant">
+        <div class="ai-tooltip">🤖 AI助手 - 点击询问文章相关问题</div>
+        <button class="ai-btn" id="aiBtn">🤖</button>
+    </div>
+
+    <!-- 返回顶部 -->
+    <button class="back-to-top" id="backToTop" title="返回顶部">↑</button>
+
+    <!-- 页脚 -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>关于</h4>
+                <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.8;">
+                    阿虎的个人博客 - 记录技术成长之路，分享AI时代的新知与洞见
+                </p>
+                <div class="author-social" style="margin-top: 15px;">
+                    <a href="https://github.com/wuhuhu800" class="social-link" target="_blank" title="GitHub">G</a>
+                    <a href="mailto:gwuhuhu800@gmail.com" class="social-link" title="Email">@</a>
+                    <a href="http://0.0.0.0:4000/feed.xml" class="social-link" title="RSS">R</a>
+                </div>
             </div>
 
-            <ul class="site-footer-links right mobile-hidden">
-                <li>
-                    <a href="javascript:window.scrollTo(0,0)" >TOP</a>
-                </li>
-            </ul>
-            <a href="http://github.com/wuhuhu800/wuhuhu800.github.io" target="_blank" aria-label="view source code">
-                <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
-            </a>
-            <ul class="site-footer-links mobile-hidden">
-                
-                <li>
-                    <a href="http://localhost:4000/" title="首页" target="">首页</a>
-                </li>
-                
-                <li>
-                    <a href="http://localhost:4000/categories/" title="分类" target="">分类</a>
-                </li>
-                
-                <li>
-                    <a href="http://localhost:4000/wiki/" title="维基" target="">维基</a>
-                </li>
-                
-                <li>
-                    <a href="http://localhost:4000/links/" title="链接" target="">链接</a>
-                </li>
-                
-                <li>
-                    <a href="http://localhost:4000/about/" title="关于" target="">关于</a>
-                </li>
-                
-                <li><a href="http://localhost:4000/feed.xml"><span class="octicon octicon-rss" style="color:orange;"></span></a></li>
-            </ul>
+            <div class="footer-section">
+                <h4>导航</h4>
+                <ul>
+                    
+                    <li><a href="http://0.0.0.0:4000/" title="首页">首页</a></li>
+                    
+                    <li><a href="http://0.0.0.0:4000/categories/" title="分类">分类</a></li>
+                    
+                    <li><a href="http://0.0.0.0:4000/wiki/" title="维基">维基</a></li>
+                    
+                    <li><a href="http://0.0.0.0:4000/links/" title="链接">链接</a></li>
+                    
+                    <li><a href="http://0.0.0.0:4000/about/" title="关于">关于</a></li>
+                    
+                </ul>
+            </div>
 
+            <div class="footer-section">
+                <h4>统计</h4>
+                <div class="stats-grid" style="grid-template-columns: 1fr;">
+                    <div class="stat-item" style="text-align: left; display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 20px;">📝</span>
+                        <div>
+                            <div class="stat-value" style="font-size: 16px;">12</div>
+                            <div class="stat-label">篇文章</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h4>技术</h4>
+                <p style="color: var(--text-secondary); font-size: 13px; line-height: 1.8;">
+                    使用 <a href="https://jekyllrb.com" target="_blank">Jekyll</a> 构建<br>
+                    主题：赛博朋克科技风 v2.1<br>
+                    按 <strong style="color: var(--accent-cyan);">Shift+?</strong> 查看快捷键
+                </p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="footer-copyright">
+                © 2026 Hu Wu · 保留所有权利
+            </div>
+            <div style="display: flex; gap: 20px; font-size: 13px; color: var(--text-muted);">
+                <a href="#" style="color: var(--text-muted);">隐私政策</a>
+                <a href="#" style="color: var(--text-muted);">使用条款</a>
+            </div>
         </div>
     </footer>
-    <!-- / footer -->
-    <script src="http://localhost:4000/assets/vendor/share.js/dist/js/share.min.js"></script>
-    <script src="http://localhost:4000/assets/js/geopattern.js"></script>
-    <script src="http://localhost:4000/assets/js/prism.js"></script>
-    <link rel="stylesheet" href="http://localhost:4000/assets/css/globals/prism.css">
+
+    <!-- 赛博朋克主题脚本 -->
+    <script src="http://0.0.0.0:4000/assets/js/cyberpunk-theme.js"></script>
+
+    <!-- Mermaid初始化 -->
+    
+
+    <!-- KaTeX初始化 -->
+    
+
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111499340-1"></script>
     <script>
-      jQuery(document).ready(function($) {
-        // geopattern
-        $('.geopattern').each(function(){
-          $(this).geopattern($(this).data('pattern-id'));
-        });
-       // hljs.initHighlightingOnLoad();
-      });
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-111499340-1');
     </script>
-
-    
-
-    
-
-    
-
-    
-    <div style="display:none">
-      <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-        ga('create', 'UA-111499340-1', 'auto');
-        ga('send', 'pageview');
-
-      </script>
-    </div>
     
 </body>
 </html>
+

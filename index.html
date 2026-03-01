@@ -1,96 +1,102 @@
 ---
 layout: default
 class: home
-css: ['pages/index.css']
-comments: false
+title: 首页
 ---
 
+<!-- 首页横幅 -->
 <section class="banner">
-    <div class="collection-head">
-        <div class="container">
-            <div class="collection-title">
-              <h1 class="collection-header" id="sub-title"><span>{{ site.subtitle }}</span></h1>
-                <div class="collection-info">
-                    <span class="meta-info mobile-hidden">
-                        <span class="octicon octicon-location"></span>
-                        {{ site.location }}
-                    </span>
-                    <span class="meta-info">
-                        <span class="octicon octicon-organization"></span>
-                        <a href="{{ site.organization_url }}" target="_blank">{{ site.organization }}</a>
-                    </span>
-                     <span class="meta-info">
-                        <span class="octicon octicon-mark-github"></span>
-                        <a href="https://github.com/{{ site.github_username }}" target="_blank">{{ site.github_username }}</a>
-                    </span>
-                </div>
+    <div class="banner-content">
+        <h1 class="banner-title">{{ site.subtitle }}</h1>
+        <p class="banner-desc">{{ site.description }}</p>
+        <div class="banner-actions">
+            <a href="#posts" class="btn btn-primary">浏览文章</a>
+            <a href="{{ site.url }}/about/" class="btn btn-secondary">关于我</a>
+        </div>
+    </div>
+</section>
+
+<!-- 文章列表 -->
+<section class="posts-section" id="posts">
+    <h2 class="section-title">最新文章</h2>
+
+    <div class="posts-list">
+        {% for post in paginator.posts %}
+        <article class="post-card" data-post-id="{{ post.id }}">
+            <h3 class="post-card-title">
+                <a href="{{ site.url }}{{ post.url }}">{{ post.title }}</a>
+            </h3>
+            <p class="post-card-excerpt">
+                {{ post.excerpt | strip_html | strip | truncate: 150 }}
+            </p>
+            <div class="post-card-meta">
+                <span class="meta-item">
+                    <span class="meta-icon">📅</span>
+                    {{ post.date | date: "%Y年%m月%d日" }}
+                </span>
+                <span class="meta-item">
+                    <span class="meta-icon">⏱️</span>
+                    {% assign words = post.content | number_of_words %}
+                    {% if words < 200 %}1{% else %}{{ words | divided_by: 200 }}{% endif %} 分钟阅读
+                </span>
+                <span class="meta-item">
+                    <span class="meta-icon">👁️</span>
+                    {{ post.content | size | divided_by: 100 }} 阅读
+                </span>
             </div>
-        </div>
-    </div>
-</section>
-<!-- /.banner -->
-<section class="container content">
-    <div class="columns">
-        <div class="column two-thirds" >
-            <ol class="repo-list">
-                {% for post in paginator.posts %}
-                <li class="repo-list-item">
-                    <h3 class="repo-list-name">
-                      <a href="{{ site.url }}{{ post.url }}">{{ post.title }}</a>
-                    </h3>
-                    <p class="repo-list-description">
-                        {{ post.excerpt | strip_html | strip }}
-                    </p>
-                    <p class="repo-list-meta">
-                        <span class="meta-info">
-                          <span class="octicon octicon-calendar"></span> {{ post.date | date: "%Y/%m/%d" }}
-                        </span>
-                        {% for cat in post.categories %}
-                        <span class="meta-info">
-                          <span class="octicon octicon-file-directory"></span>
-                          <a href="{{ site.url }}/categories/#{{ cat }}" title="{{ cat }}">{{ cat }}</a>
-                        </span>
-                        {% endfor %}
-                    </p>
-                </li>
+            <div class="post-card-tags">
+                {% for tag in post.tags limit:5 %}
+                <span class="tag">{{ tag }}</span>
                 {% endfor %}
-            </ol>
-        </div>
-        <div class="column one-third">
-            {% include sidebar-search.html %}
-            {% include sidebar-popular-repo.html %}
-        </div>
-    </div>
-    <div class="pagination text-align">
-      <div class="btn-group">
-        {% if paginator.previous_page %}
-          {% if paginator.previous_page == 1 %}
-              <a href="{{ site.url }}/" class="btn btn-outline">&laquo;</a>
-          {% else %}
-              <a href="{{ site.url }}/page{{paginator.previous_page}}"  class="btn btn-outline">&laquo;</a>
-          {% endif %}
-        {% else %}
-            <button disabled="disabled" href="javascript:;" class="btn btn-outline">&laquo;</button>
-        {% endif %}
-        {% if paginator.page == 1 %}
-            <a href="javascript:;" class="active btn btn-outline">1</a>
-        {% else %}
-            <a href="{{ site.url }}/"  class="btn btn-outline">1</a>
-        {% endif %}
-        {% for count in (2..paginator.total_pages) %}
-          {% if count == paginator.page %}
-              <a href="javascript:;"  class="active btn btn-outline">{{count}}</a>
-          {% else %}
-              <a href="{{ site.url }}/page{{count}}"  class="btn btn-outline">{{count}}</a>
-          {% endif %}
+                {% for cat in post.categories limit:2 %}
+                <span class="tag tag-cat">{{ cat }}</span>
+                {% endfor %}
+            </div>
+
+            <!-- 互动按钮 -->
+            <div class="post-actions">
+                <button class="interaction-btn like-btn" data-post-id="{{ post.id }}">
+                    <span class="btn-icon">❤️</span>
+                    <span class="count">{{ post.content | size | modulo: 100 }}</span>
+                    <span class="btn-text">点赞</span>
+                </button>
+                <button class="interaction-btn bookmark-btn" data-post-id="{{ post.id }}">
+                    <span class="btn-icon">⭐</span>
+                    <span class="btn-text">收藏</span>
+                </button>
+                <button class="interaction-btn share-btn" data-url="{{ site.url }}{{ post.url }}">
+                    <span class="btn-icon">🔗</span>
+                    <span class="btn-text">分享</span>
+                </button>
+            </div>
+        </article>
         {% endfor %}
-        {% if paginator.next_page %}
-            <a href="{{ site.url }}/page{{paginator.next_page}}"  class="btn btn-outline">&raquo;</a>
-        {% else %}
-            <button disabled="disabled" href="javascript:;" class="btn btn-outline">&raquo;</button>
-        {% endif %}
-        </div>
     </div>
-    <!-- /pagination -->
+
+    <!-- 分页 -->
+    {% if paginator.total_pages > 1 %}
+    <div class="pagination">
+        {% if paginator.previous_page %}
+        <a href="{{ paginator.previous_page_path }}" class="page-btn page-nav">←</a>
+        {% else %}
+        <button class="page-btn page-nav" disabled>←</button>
+        {% endif %}
+
+        {% for page in (1..paginator.total_pages) %}
+        {% if page == paginator.page %}
+        <button class="page-btn active">{{ page }}</button>
+        {% elsif page == 1 %}
+        <a href="{{ site.url }}/" class="page-btn">{{ page }}</a>
+        {% else %}
+        <a href="{{ site.paginate_path | replace: ':num', page }}" class="page-btn">{{ page }}</a>
+        {% endif %}
+        {% endfor %}
+
+        {% if paginator.next_page %}
+        <a href="{{ paginator.next_page_path }}" class="page-btn page-nav">→</a>
+        {% else %}
+        <button class="page-btn page-nav" disabled>→</button>
+        {% endif %}
+    </div>
+    {% endif %}
 </section>
-<!-- /section.content -->

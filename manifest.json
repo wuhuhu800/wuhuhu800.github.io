@@ -1,0 +1,43 @@
+{
+  "name": "问道 - 阿虎的个人博客",
+  "short_name": "问道",
+  "description": "记录技术成长之路，分享AI时代的新知与洞见",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d1117",
+  "theme_color": "#00f5ff",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "zh-CN",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["blog", "technology", "education"],
+  "shortcuts": [
+    {
+      "name": "首页",
+      "short_name": "首页",
+      "description": "查看最新文章",
+      "url": "/"
+    },
+    {
+      "name": "分类",
+      "short_name": "分类",
+      "description": "按分类浏览文章",
+      "url": "/categories/"
+    },
+    {
+      "name": "关于",
+      "short_name": "关于",
+      "description": "关于博主",
+      "url": "/about/"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}

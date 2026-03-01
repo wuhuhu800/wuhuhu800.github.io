@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>安装ubuntu 16.04LTS + Anaconda3 +cuda9.1+cudnn7.1.3+tensorflow1.7+python3 — 问道</title>
+
+    <!-- 赛博朋克主题样式 -->
+    <link rel="stylesheet" href="http://0.0.0.0:4000/assets/css/cyberpunk-theme.css">
+
+    <!-- 字体 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    
+
+    <!-- SEO Meta Tags -->
+    <link rel="canonical" href="http://0.0.0.0:4000/2018/05/02/for-ubuntu16.04+Anaconda3+cuda9.1+cudnn7.1.3/">
+    <link rel="alternate" type="application/atom+xml" title="问道" href="http://0.0.0.0:4000/feed.xml">
+    <link rel="icon" type="image/svg+xml" href="http://0.0.0.0:4000/favicon.svg">
+    <link rel="alternate icon" href="http://0.0.0.0:4000/favicon.ico">
+
+    
+    <meta property="og:title" content="安装ubuntu 16.04LTS + Anaconda3 +cuda9.1+cudnn7.1.3+tensorflow1.7+python3">
+    
+    <meta name="keywords" content="深度学习,ubuntu,tensorflow">
+    <meta name="og:keywords" content="深度学习,ubuntu,tensorflow">
+    
+    <meta name="description" content="主要参考文章How to install Tensorflow GPU with CUDA Toolkit 9.1 and cuDNN 7.1.2 for Python 3 on Ubuntu 16.04-64bit">
+    <meta name="og:description" content="主要参考文章How to install Tensorflow GPU with CUDA Toolkit 9.1 and cuDNN 7.1.2 for Python 3 on Ubuntu 16.04-64bit">
+    
+    
+
+    
+
+    <meta property="og:url" content="http://0.0.0.0:4000/2018/05/02/for-ubuntu16.04+Anaconda3+cuda9.1+cudnn7.1.3/">
+    <meta property="og:site_name" content="问道">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+
+    
+    <meta property="article:published_time" content="2018-05-02">
+    
+
+    <!-- PWA -->
+    <link rel="manifest" href="http://0.0.0.0:4000/manifest.json">
+    <meta name="theme-color" content="#0d1117">
+
+    <!-- 页面特定CSS -->
+    
+
+    <!-- Mermaid -->
+    
+
+    <!-- KaTeX -->
+    
+</head>
+
+<body class="" data-mz="">
+    <!-- 网格背景 -->
+    <div class="cyber-grid"></div>
+
+    <!-- 阅读进度条 -->
+    <div class="reading-progress" id="readingProgress" style="width: 0%"></div>
+
+    <!-- 头部导航 -->
+    <header class="site-header">
+        <a href="http://0.0.0.0:4000/" class="site-logo" title="问道">
+            问道
+        </a>
+
+        <nav class="site-nav" role="navigation">
+            
+            <a href="http://0.0.0.0:4000/"
+               class=""
+               target="_self"
+               title="首页">
+                首页
+            </a>
+            
+            <a href="http://0.0.0.0:4000/categories/"
+               class=""
+               target="_self"
+               title="分类">
+                分类
+            </a>
+            
+            <a href="http://0.0.0.0:4000/wiki/"
+               class=""
+               target="_self"
+               title="维基">
+                维基
+            </a>
+            
+            <a href="http://0.0.0.0:4000/links/"
+               class=""
+               target="_self"
+               title="链接">
+                链接
+            </a>
+            
+            <a href="http://0.0.0.0:4000/about/"
+               class=""
+               target="_self"
+               title="关于">
+                关于
+            </a>
+            
+        </nav>
+
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <!-- 搜索框 -->
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" placeholder="搜索文章..." id="searchInput">
+            </div>
+
+            <!-- 主题切换 -->
+            <button class="theme-toggle" id="themeToggle" title="切换主题">🌙</button>
+
+            <!-- 移动端菜单按钮 -->
+            <button class="mobile-menu-btn" id="mobileMenuBtn" title="菜单">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+    <!-- / header -->
+
+
+<main class="main-container">
+    <!-- 左侧边栏 -->
+    <aside class="sidebar sidebar-left">
+        <!-- 数据统计 -->
+        <div class="widget">
+            <div class="widget-title">📊 数据统计</div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value">12</div>
+                    <div class="stat-label">文章</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">12.5k</div>
+                    <div class="stat-label">阅读</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">1.2k</div>
+                    <div class="stat-label">点赞</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">89</div>
+                    <div class="stat-label">评论</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 文章目录（文章页面显示） -->
+        
+        <div class="widget toc-widget">
+            <div class="widget-title">📑 文章目录</div>
+            <ul class="toc-list" id="tocList">
+                <li style="color: var(--text-muted);">加载中...</li>
+            </ul>
+        </div>
+        
+
+        <!-- 热门标签 -->
+        <div class="widget">
+            <div class="widget-title">🏷️ 热门标签</div>
+            <div class="tag-cloud">
+                <span class="tag">Python</span>
+                <span class="tag">AI</span>
+                <span class="tag">机器学习</span>
+                <span class="tag">深度学习</span>
+                <span class="tag">数据分析</span>
+                <span class="tag">OpenClaw</span>
+                <span class="tag">算法</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- 主内容区 -->
+    <div class="main-content">
+        <article class="article-header" data-id="/2018/05/02/for-ubuntu16.04+Anaconda3+cuda9.1+cudnn7.1.3">
+    <h1 class="article-title">安装ubuntu 16.04LTS + Anaconda3 +cuda9.1+cudnn7.1.3+tensorflow1.7+python3</h1>
+
+    <div class="article-meta">
+        
+        <span class="meta-item">
+            <span class="meta-icon">📅</span>
+            2018年05月02日
+        </span>
+        
+        <span class="meta-item">
+            <span class="meta-icon">⏱️</span>
+            <span class="reading-time">--</span> 分钟阅读
+        </span>
+        <span class="meta-item">
+            <span class="meta-icon">👁️</span>
+            11482 阅读
+        </span>
+    </div>
+
+    
+    <div class="article-tags">
+        
+        <span class="tag">#jekyll</span>
+        
+        
+        <a href="http://0.0.0.0:4000/categories/#深度学习" class="tag tag-cat">深度学习</a>
+        
+    </div>
+    
+</article>
+
+<article class="article-content" id="articleContent">
+    <p>主要参考文章<a href="http://www.python36.com/install-tensorflow141-gpu/">How to install Tensorflow GPU with CUDA Toolkit 9.1 and cuDNN 7.1.2 for Python 3 on Ubuntu 16.04-64bit</a></p>
+
+<p>经过近30小时探索，终于把深度学习环境tensorflow gpu版本 安装成功。最难搞定就是编译过程，就是14步，又耗时又不好找问题。找了各种文章，很多都无法成功。上面分享的是比较靠谱的文章，只不过没有安装jupyter，我在此基础上加入了安装jupyter：</p>
+
+<h3 id="1配置goolge-服务器的ubuntu-1604可以自行配置之后进入terminal">1、配置goolge 服务器的ubuntu 16.04，可以自行配置，之后进入terminal</h3>
+
+<h3 id="2升级">2、升级</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt-get update
+sudo apt-get upgrade
+</code></pre></div></div>
+
+<h3 id="3安装-anaconda3">3、安装 Anaconda3</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://www.howtoing.com/how-to-install-the-anaconda-python-distribution-on-ubuntu-16-04
+curl -O https://repo.continuum.io/archive/Anaconda3-5.1.0-Linux-x86_64.sh
+</code></pre></div></div>
+
+<p>我们现在可以通过SHA-256校验和通过加密散列验证来验证安装程序的数据完整性。我们将使用sha256sum命令以及脚本的文件名：</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sha256sum Anaconda3-5.1.0-Linux-x86_64.sh
+bash Anaconda3-5.1.0-Linux-x86_64.sh
+</code></pre></div></div>
+<p>一路yes</p>
+
+<p>Prepending PATH=/home/sammy/anaconda3/bin to PATH in /home/sammy/.bashrc
+A backup will be made to: /home/sammy/.bashrc-anaconda3.bak</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>source ~/.bashrc
+</code></pre></div></div>
+<p>一旦你这样做，你可以验证你的安装通过使用conda命令，例如与list ：</p>
+
+<p>conda list</p>
+
+<h3 id="4-verify-you-have-a-cuda-capable-gpu">4、 Verify You Have a CUDA-Capable GPU:</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lspci | grep -i nvidia
+</code></pre></div></div>
+
+<h3 id="5verify-you-have-a-supported-version-of-linux">5、Verify You Have a Supported Version of Linux</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>uname -m &amp;&amp; cat /etc/*release
+</code></pre></div></div>
+
+<h3 id="6install-dependencies">6、Install Dependencies</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt-get install build-essential
+sudo apt-get install cmake git unzip zip
+sudo apt-get install  pylint
+
+</code></pre></div></div>
+<h3 id="7install-linux-kernel-header">7、Install linux kernel header</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>uname -r
+</code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt-get install linux-headers-$(uname -r)
+</code></pre></div></div>
+<h3 id="8download-the-nvidia-cuda-toolkit">8、Download the NVIDIA CUDA Toolkit:</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-repo-ubuntu1604_9.1.85-1_amd64.deb
+
+sudo apt-key adv --fetch-keys http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/7fa2af80.pub
+
+sudo dpkg -i cuda-repo-ubuntu1604_9.1.85-1_amd64.deb
+sudo apt-get update
+sudo apt-get install cuda-9.1
+</code></pre></div></div>
+<h3 id="9reboot-the-system-to-load-the-nvidia-drivers">9、Reboot the system to load the NVIDIA drivers</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo reboot
+</code></pre></div></div>
+<h3 id="10go-to-terminal-and-type">10、Go to terminal and type:</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nano ~/.bashrc
+</code></pre></div></div>
+<p>in the end of the file, add:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export PATH=/usr/local/cuda-9.1/bin${PATH:+:${PATH}}
+export LD_LIBRARY_PATH=/usr/local/cuda-9.1/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+</code></pre></div></div>
+<p>ctrl+x then y to save and exit</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>source ~/.bashrc
+sudo ldconfig
+nvidia-smi
+</code></pre></div></div>
+<h3 id="11install-cudnn-713">11、Install cuDNN 7.1.3</h3>
+
+<p>Goto https://developer.nvidia.com/cudnn and download Membership required</p>
+
+<p>After login</p>
+
+<p>Download the following:</p>
+
+<p>cuDNN v7.1.3 Runtime Library for Ubuntu16.04 (Deb)</p>
+
+<p>cuDNN v7.1.3 Developer Library for Ubuntu16.04 (Deb)</p>
+
+<p>cuDNN v7.1.3 Code Samples and User Guide for Ubuntu16.04 (Deb)</p>
+
+<p>Goto downloaded folder and in terminal perform following:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo dpkg -i libcudnn7-doc_7.1.3.16-1+cuda9.1_amd64.deb
+sudo dpkg -i llibcudnn7_7.1.3.16-1+cuda9.1_amd64.deb
+sudo dpkg -i libcudnn7-dev_7.1.3.16-1+cuda9.1_amd64.deb
+
+</code></pre></div></div>
+<p>Verifying cuDNN installation:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cp -r /usr/src/cudnn_samples_v7/ $HOME
+cd  $HOME/cudnn_samples_v7/mnistCUDNN
+make clean &amp;&amp; make
+./mnistCUDNN
+</code></pre></div></div>
+<p>If cuDNN is properly installed and running on your Linux system, you will see a message similar to the following:</p>
+
+<p>Test passed!</p>
+
+<h3 id="12install-dependencies">12、Install Dependencies</h3>
+<p>libcupti (required)</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt-get install libcupti-dev
+
+echo 'export LD_LIBRARY_PATH=/usr/local/cuda/extras/CUPTI/lib64:$LD_LIBRARY_PATH' &gt;&gt; ~/.bashrc
+</code></pre></div></div>
+<p>Bazel (required)</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt-get install pkg-config zip g++ zlib1g-dev unzip
+
+sudo apt-get install openjdk-8-jdk
+wget https://github.com/bazelbuild/bazel/releases/download/0.11.1/bazel_0.11.1-linux-x86_64.deb
+sudo dpkg -i bazel_0.11.1-linux-x86_64.deb
+</code></pre></div></div>
+<p>To install these packages for Python 3.n, issue the following command:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt-get install python3-numpy python3-dev python3-pip python3-wheel
+</code></pre></div></div>
+<h3 id="13-configure-tensorflow-from-source">13、 Configure Tensorflow from source:</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>source ~/.bashrc
+sudo ldconfig
+</code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget https://github.com/tensorflow/tensorflow/archive/v1.7.0.zip
+unzip v1.7.0.zip
+cd tensorflow-1.7.0
+./configure
+</code></pre></div></div>
+<p>Give python path in</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Please specify the location of python. [Default is /usr/bin/python]: /usr/bin/python3
+</code></pre></div></div>
+<p>Press enter two times</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Do you wish to build TensorFlow with jemalloc as malloc support? [Y/n]: Y
+Do you wish to build TensorFlow with Google Cloud Platform support? [Y/n]: Y
+Do you wish to build TensorFlow with Hadoop File System support? [Y/n]: n
+Do you wish to build TensorFlow with Amazon S3 File System support? [Y/n]: n
+Do you wish to build TensorFlow with Apache Kafka Platform support? [y/N]: N
+Do you wish to build TensorFlow with XLA JIT support? [y/N]: N
+Do you wish to build TensorFlow with GDR support? [y/N]: N
+Do you wish to build TensorFlow with VERBS support? [y/N]: N
+Do you wish to build TensorFlow with OpenCL SYCL support? [y/N]: N
+Do you wish to build TensorFlow with CUDA support? [y/N]: Y
+Please specify the CUDA SDK version you want to use, e.g. 7.0. [Leave empty to default to CUDA 9.0]: 9.1
+Please specify the location where CUDA 9.1 toolkit is installed. Refer to README.md for more details. [Default is /usr/local/cuda]: /usr/local/cuda
+Please specify the cuDNN version you want to use. [Leave empty to default to cuDNN 7.0]: 7.1.3
+Please specify the location where cuDNN 7 library is installed. Refer to README.md for more details. [Default is /usr/local/cuda]: /usr/lib/x86_64-linux-gnu
+Do you wish to build TensorFlow with TensorRT support? [y/N]: N
+</code></pre></div></div>
+<p>Now we need compute capability which we have noted at step 1 eg. 5.0</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Please note that each additional compute capability significantly increases your build time and binary size. [Default is: 5.0] 5.0
+</code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Do you want to use clang as CUDA compiler? [y/N]: N
+Please specify which gcc should be used by nvcc as the host compiler. [Default is /usr/bin/gcc]: /usr/bin/gcc
+Do you wish to build TensorFlow with MPI support? [y/N]: N
+Please specify optimization flags to use during compilation when bazel option "--config=opt" is specified [Default is -march=native]: -march=native
+Would you like to interactively configure ./WORKSPACE for Android builds? [y/N]:N
+</code></pre></div></div>
+<h3 id="14build-tensorflow-using-bazel">14、Build Tensorflow using bazel</h3>
+<p>Do following to create symbolic link to cuda/include/math_functions.hpp from cuda/include/crt/math_functions.hpp to fix math_functions.hpp is not found error.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo ln -s /usr/local/cuda/include/crt/math_functions.hpp /usr/local/cuda/include/math_functions.hpp
+</code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bazel build --config=opt --config=cuda --incompatible_load_argument_is_label=false //tensorflow/tools/pip_package:build_pip_package
+</code></pre></div></div>
+<p><strong>This process will take a lot of time. It may take 1 – 2 hours or maybe even more.</strong></p>
+
+<p>The bazel build command builds a script named build_pip_package. Running this script as follows will build a .whl file within the tensorflow_pkg directory:</p>
+
+<p>To build whl file issue following command:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bazel-bin/tensorflow/tools/pip_package/build_pip_package tensorflow_pkg
+</code></pre></div></div>
+<p>Activate your virtual environment here if you use.</p>
+
+<p>To install tensorflow with pip:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd tensorflow_pkg
+#python3是默认
+pip install tensorflow*.whl
+</code></pre></div></div>
+<h3 id="15安装tensorflow-gpu">15、安装tensorflow-gpu</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install tensorflow-gpu==1.7
+</code></pre></div></div>
+<h3 id="16verify-tensorflow-installation">16、Verify Tensorflow installation</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import tensorflow as tf
+
+if not tf.test.gpu_device_name():
+    warnings.warn('没有找到GPU.')
+else:
+    print('默认的GPU设备: {}'.format(tf.test.gpu_device_name()))
+</code></pre></div></div>
+<p>结果</p>
+<blockquote>
+  <p>Hello, TensorFlow!</p>
+</blockquote>
+
+<p>最后的安装完成之后的文件结构
+<img src="https://user-images.githubusercontent.com/21167490/39500030-4beec232-4de4-11e8-8b72-377b3919b905.png" alt="image" /></p>
+
+<p>启用jupyter notebook</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>jupyter notebook --ip 0.0.0.0 --port 8888
+</code></pre></div></div>
+
+</article>
+
+<!-- 互动栏 -->
+<div class="interaction-bar" style="display: flex; justify-content: center; gap: 16px; margin: 40px 0; padding: 30px 0; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); flex-wrap: wrap;">
+    <button class="interaction-btn like-btn" data-post-id="/2018/05/02/for-ubuntu16.04+Anaconda3+cuda9.1+cudnn7.1.3">
+        <span class="btn-icon">❤️</span>
+        <span class="count">482</span>
+        <span class="btn-text">点赞</span>
+    </button>
+    <button class="interaction-btn bookmark-btn" data-post-id="/2018/05/02/for-ubuntu16.04+Anaconda3+cuda9.1+cudnn7.1.3">
+        <span class="btn-icon">⭐</span>
+        <span class="btn-text">收藏</span>
+    </button>
+    <button class="interaction-btn" id="commentBtn">
+        <span class="btn-icon">💬</span>
+        <span class="btn-text">评论</span>
+    </button>
+    <button class="interaction-btn share-btn" data-url="http://0.0.0.0:4000/2018/05/02/for-ubuntu16.04+Anaconda3+cuda9.1+cudnn7.1.3/">
+        <span class="btn-icon">🔗</span>
+        <span class="btn-text">分享</span>
+    </button>
+</div>
+
+<!-- 文章导航 -->
+<nav class="post-navigation">
+    
+    <a href="http://0.0.0.0:4000/2018/03/28/learning-from-data-02/" class="post-nav-item prev">
+        <span class="post-nav-label">← 上一篇</span>
+        <span class="post-nav-title">learning from data 2nd lession notes</span>
+    </a>
+    
+
+    
+    <a href="http://0.0.0.0:4000/2018/06/26/pic2pdf/" class="post-nav-item next">
+        <span class="post-nav-label">下一篇 →</span>
+        <span class="post-nav-title">图片批量转pdf</span>
+    </a>
+    
+</nav>
+
+<!-- 评论区 -->
+<section class="comments-section" id="commentsSection" style="margin-top: 40px; padding-top: 40px; border-top: 1px solid var(--border-color);">
+    <h3 style="font-size: 20px; color: var(--accent-cyan); margin-bottom: 20px;">💬 评论</h3>
+    
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2018/05/02/for-ubuntu16.04+Anaconda3+cuda9.1+cudnn7.1.3/',
+            clientID: '',
+            clientSecret: '',
+            repo: '',
+            owner: '',
+            admin: [''],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+</section>
+
+<script>
+    // 评论按钮平滑滚动
+    document.addEventListener('DOMContentLoaded', function() {
+        const commentBtn = document.getElementById('commentBtn');
+        if (commentBtn) {
+            commentBtn.addEventListener('click', function() {
+                const commentsSection = document.getElementById('commentsSection');
+                if (commentsSection) {
+                    commentsSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        }
+
+        // 计算阅读时间
+        const articleContent = document.getElementById('articleContent');
+        if (articleContent) {
+            const text = articleContent.textContent || '';
+            const chineseChars = text.match(/[\u4e00-\u9fa5]/g) || [];
+            const wordCount = chineseChars.length + (text.match(/[a-zA-Z]+/g) || []).length;
+            const minutes = Math.max(1, Math.ceil(wordCount / 300));
+
+            const readingTimeEl = document.querySelector('.reading-time');
+            if (readingTimeEl) {
+                readingTimeEl.textContent = minutes;
+            }
+        }
+    });
+</script>
+
+    </div>
+
+    <!-- 右侧边栏 -->
+    <aside class="sidebar sidebar-right">
+        <!-- 作者信息 -->
+        <div class="widget author-card">
+            <div class="author-avatar">
+                H
+            </div>
+            <div class="author-name">Hu Wu</div>
+            <div class="author-bio">
+                阿虎的个人博客 - 记录技术成长之路，分享AI时代的新知与洞见
+            </div>
+            <div class="author-social">
+                <a href="https://github.com/wuhuhu800" class="social-link" target="_blank" title="GitHub">G</a>
+                <a href="mailto:gwuhuhu800@gmail.com" class="social-link" title="Email">@</a>
+                <a href="http://0.0.0.0:4000/feed.xml" class="social-link" title="RSS">R</a>
+            </div>
+        </div>
+
+        <!-- 相关文章（文章页面显示） -->
+        
+        <div class="widget">
+            <div class="widget-title">📚 相关文章</div>
+            <ul class="related-posts">
+                
+            </ul>
+        </div>
+        
+
+        <!-- 热门文章 -->
+        <div class="widget">
+            <div class="widget-title">🔥 热门文章</div>
+            <ul class="related-posts">
+                
+                <li class="related-post">
+                    <a href="http://0.0.0.0:4000/2026/03/01/AI_Agent-earn-money/">Ai_agent Earn Money</a>
+                    <div class="related-post-meta">2026年03月</div>
+                </li>
+                
+                <li class="related-post">
+                    <a href="http://0.0.0.0:4000/2018/10/27/find_copy/">对比两篇文章重复度</a>
+                    <div class="related-post-meta">2018年10月</div>
+                </li>
+                
+                <li class="related-post">
+                    <a href="http://0.0.0.0:4000/2018/10/07/taobao_pic/">淘宝商品详情页图片抓取</a>
+                    <div class="related-post-meta">2018年10月</div>
+                </li>
+                
+                <li class="related-post">
+                    <a href="http://0.0.0.0:4000/2018/07/09/Rubik's-Cube/">三阶魔方新手教程</a>
+                    <div class="related-post-meta">2018年07月</div>
+                </li>
+                
+                <li class="related-post">
+                    <a href="http://0.0.0.0:4000/2018/06/26/pic2pdf/">图片批量转pdf</a>
+                    <div class="related-post-meta">2018年06月</div>
+                </li>
+                
+            </ul>
+        </div>
+
+        <!-- GitHub活动 -->
+        <div class="widget">
+            <div class="widget-title">💻 GitHub</div>
+            <div style="text-align: center; padding: 10px;">
+                <img src="https://ghchart.rshah.org/wuhuhu800"
+                     alt="GitHub Contributions"
+                     style="width: 100%; border-radius: 8px; opacity: 0.8;"
+                     onerror="this.style.display='none'">
+            </div>
+        </div>
+    </aside>
+</main>
+
+    <!-- 悬浮功能按钮 -->
+    <div class="floating-panel">
+        <button class="feature-btn" id="settingsBtn" title="阅读设置">⚙️</button>
+        <button class="feature-btn" id="ttsToggleBtn" title="语音朗读">🔊</button>
+        <button class="feature-btn" id="shareBtn" title="分享文章">📤</button>
+    </div>
+
+    <!-- 设置面板 -->
+    <div class="settings-panel" id="settingsPanel">
+        <div class="setting-item">
+            <div class="setting-label">字体大小</div>
+            <div class="setting-options">
+                <button class="setting-btn" data-setting="fontSize" data-value="small">小</button>
+                <button class="setting-btn active" data-setting="fontSize" data-value="medium">中</button>
+                <button class="setting-btn" data-setting="fontSize" data-value="large">大</button>
+            </div>
+        </div>
+        <div class="setting-item">
+            <div class="setting-label">行宽</div>
+            <div class="setting-options">
+                <button class="setting-btn" data-setting="lineWidth" data-value="narrow">窄</button>
+                <button class="setting-btn active" data-setting="lineWidth" data-value="medium">中</button>
+                <button class="setting-btn" data-setting="lineWidth" data-value="wide">宽</button>
+            </div>
+        </div>
+        <div class="setting-item">
+            <div class="setting-label">行高</div>
+            <div class="setting-options">
+                <button class="setting-btn" data-setting="lineHeight" data-value="compact">紧凑</button>
+                <button class="setting-btn active" data-setting="lineHeight" data-value="comfortable">舒适</button>
+                <button class="setting-btn" data-setting="lineHeight" data-value="relaxed">宽松</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TTS面板 -->
+    <div class="tts-panel" id="ttsPanel">
+        <button class="tts-btn" id="ttsPrev" title="上一段">⏮</button>
+        <button class="tts-btn" id="ttsPlay" title="播放/暂停">▶</button>
+        <button class="tts-btn" id="ttsNext" title="下一段">⏭</button>
+        <div class="tts-progress">
+            <div class="tts-progress-bar" id="ttsProgressBar"></div>
+        </div>
+        <button class="tts-btn" id="ttsClose" title="关闭">✕</button>
+    </div>
+
+    <!-- AI助手 -->
+    <div class="ai-assistant" id="aiAssistant">
+        <div class="ai-tooltip">🤖 AI助手 - 点击询问文章相关问题</div>
+        <button class="ai-btn" id="aiBtn">🤖</button>
+    </div>
+
+    <!-- 返回顶部 -->
+    <button class="back-to-top" id="backToTop" title="返回顶部">↑</button>
+
+    <!-- 页脚 -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>关于</h4>
+                <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.8;">
+                    阿虎的个人博客 - 记录技术成长之路，分享AI时代的新知与洞见
+                </p>
+                <div class="author-social" style="margin-top: 15px;">
+                    <a href="https://github.com/wuhuhu800" class="social-link" target="_blank" title="GitHub">G</a>
+                    <a href="mailto:gwuhuhu800@gmail.com" class="social-link" title="Email">@</a>
+                    <a href="http://0.0.0.0:4000/feed.xml" class="social-link" title="RSS">R</a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h4>导航</h4>
+                <ul>
+                    
+                    <li><a href="http://0.0.0.0:4000/" title="首页">首页</a></li>
+                    
+                    <li><a href="http://0.0.0.0:4000/categories/" title="分类">分类</a></li>
+                    
+                    <li><a href="http://0.0.0.0:4000/wiki/" title="维基">维基</a></li>
+                    
+                    <li><a href="http://0.0.0.0:4000/links/" title="链接">链接</a></li>
+                    
+                    <li><a href="http://0.0.0.0:4000/about/" title="关于">关于</a></li>
+                    
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>统计</h4>
+                <div class="stats-grid" style="grid-template-columns: 1fr;">
+                    <div class="stat-item" style="text-align: left; display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 20px;">📝</span>
+                        <div>
+                            <div class="stat-value" style="font-size: 16px;">12</div>
+                            <div class="stat-label">篇文章</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h4>技术</h4>
+                <p style="color: var(--text-secondary); font-size: 13px; line-height: 1.8;">
+                    使用 <a href="https://jekyllrb.com" target="_blank">Jekyll</a> 构建<br>
+                    主题：赛博朋克科技风 v2.1<br>
+                    按 <strong style="color: var(--accent-cyan);">Shift+?</strong> 查看快捷键
+                </p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="footer-copyright">
+                © 2026 Hu Wu · 保留所有权利
+            </div>
+            <div style="display: flex; gap: 20px; font-size: 13px; color: var(--text-muted);">
+                <a href="#" style="color: var(--text-muted);">隐私政策</a>
+                <a href="#" style="color: var(--text-muted);">使用条款</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 赛博朋克主题脚本 -->
+    <script src="http://0.0.0.0:4000/assets/js/cyberpunk-theme.js"></script>
+
+    <!-- Mermaid初始化 -->
+    
+
+    <!-- KaTeX初始化 -->
+    
+
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111499340-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-111499340-1');
+    </script>
+    
+</body>
+</html>
+

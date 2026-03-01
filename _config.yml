@@ -6,11 +6,30 @@ url: https://wuhuhu800.github.io
 date_format: "ordinal"
 title: 问道
 subtitle: "学无先后，达者为师"
-description: "阿虎的个人博客"
-keywords: 问道, 阿虎, Woody
+description: "阿虎的个人博客 - 记录技术成长之路，分享AI时代的新知与洞见"
+keywords: 问道, 阿虎, Woody, AI, 机器学习, 深度学习, Python
 timezone: Asia/Shanghai
 encoding: "utf-8"
 side_bar_repo_limit: 5
+
+# ---------------- #
+#  Theme Settings  #
+# ---------------- #
+theme_settings:
+  name: "赛博朋克科技风"
+  version: "1.0.0"
+  author: "Claude"
+  primary_color: "#00f5ff"
+  secondary_color: "#bf00ff"
+  dark_mode: true
+  particle_background: true
+  reading_progress: true
+  toc_navigator: true
+  code_enhancer: true
+  tts_enabled: true
+  ai_assistant: true
+  search_enabled: true
+  pwa_enabled: true
 
 # ---------------- #
 #      Author      #
@@ -63,7 +82,7 @@ lsi: false
 quiet: false
 excerpt_separator: "\n\n"
 permalink: /:year/:month/:day/:title/
-gems:
+plugins:
     - jekyll-github-metadata
     - rouge
 #     - jekyll-html-pipeline

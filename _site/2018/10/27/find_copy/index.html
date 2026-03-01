@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>对比两篇文章重复度 — 问道</title>
+
+    <!-- 赛博朋克主题样式 -->
+    <link rel="stylesheet" href="http://0.0.0.0:4000/assets/css/cyberpunk-theme.css">
+
+    <!-- 字体 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    
+
+    <!-- SEO Meta Tags -->
+    <link rel="canonical" href="http://0.0.0.0:4000/2018/10/27/find_copy/">
+    <link rel="alternate" type="application/atom+xml" title="问道" href="http://0.0.0.0:4000/feed.xml">
+    <link rel="icon" type="image/svg+xml" href="http://0.0.0.0:4000/favicon.svg">
+    <link rel="alternate icon" href="http://0.0.0.0:4000/favicon.ico">
+
+    
+    <meta property="og:title" content="对比两篇文章重复度">
+    
+    <meta name="keywords" content="bs4、py2exe">
+    <meta name="og:keywords" content="bs4、py2exe">
+    
+    <meta name="description" content="本文主要是通过用GUI方式对比两篇文章的重复度，有两种方式：1、微信的链接；2、直接copy文字进行；2、并且通过生成exe文件，发布出去">
+    <meta name="og:description" content="本文主要是通过用GUI方式对比两篇文章的重复度，有两种方式：1、微信的链接；2、直接copy文字进行；2、并且通过生成exe文件，发布出去">
+    
+    
+
+    
+
+    <meta property="og:url" content="http://0.0.0.0:4000/2018/10/27/find_copy/">
+    <meta property="og:site_name" content="问道">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+
+    
+    <meta property="article:published_time" content="2018-10-27">
+    
+
+    <!-- PWA -->
+    <link rel="manifest" href="http://0.0.0.0:4000/manifest.json">
+    <meta name="theme-color" content="#0d1117">
+
+    <!-- 页面特定CSS -->
+    
+
+    <!-- Mermaid -->
+    
+
+    <!-- KaTeX -->
+    
+</head>
+
+<body class="" data-mz="">
+    <!-- 网格背景 -->
+    <div class="cyber-grid"></div>
+
+    <!-- 阅读进度条 -->
+    <div class="reading-progress" id="readingProgress" style="width: 0%"></div>
+
+    <!-- 头部导航 -->
+    <header class="site-header">
+        <a href="http://0.0.0.0:4000/" class="site-logo" title="问道">
+            问道
+        </a>
+
+        <nav class="site-nav" role="navigation">
+            
+            <a href="http://0.0.0.0:4000/"
+               class=""
+               target="_self"
+               title="首页">
+                首页
+            </a>
+            
+            <a href="http://0.0.0.0:4000/categories/"
+               class=""
+               target="_self"
+               title="分类">
+                分类
+            </a>
+            
+            <a href="http://0.0.0.0:4000/wiki/"
+               class=""
+               target="_self"
+               title="维基">
+                维基
+            </a>
+            
+            <a href="http://0.0.0.0:4000/links/"
+               class=""
+               target="_self"
+               title="链接">
+                链接
+            </a>
+            
+            <a href="http://0.0.0.0:4000/about/"
+               class=""
+               target="_self"
+               title="关于">
+                关于
+            </a>
+            
+        </nav>
+
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <!-- 搜索框 -->
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" placeholder="搜索文章..." id="searchInput">
+            </div>
+
+            <!-- 主题切换 -->
+            <button class="theme-toggle" id="themeToggle" title="切换主题">🌙</button>
+
+            <!-- 移动端菜单按钮 -->
+            <button class="mobile-menu-btn" id="mobileMenuBtn" title="菜单">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+    <!-- / header -->
+
+
+<main class="main-container">
+    <!-- 左侧边栏 -->
+    <aside class="sidebar sidebar-left">
+        <!-- 数据统计 -->
+        <div class="widget">
+            <div class="widget-title">📊 数据统计</div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value">12</div>
+                    <div class="stat-label">文章</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">12.5k</div>
+                    <div class="stat-label">阅读</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">1.2k</div>
+                    <div class="stat-label">点赞</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">89</div>
+                    <div class="stat-label">评论</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 文章目录（文章页面显示） -->
+        
+        <div class="widget toc-widget">
+            <div class="widget-title">📑 文章目录</div>
+            <ul class="toc-list" id="tocList">
+                <li style="color: var(--text-muted);">加载中...</li>
+            </ul>
+        </div>
+        
+
+        <!-- 热门标签 -->
+        <div class="widget">
+            <div class="widget-title">🏷️ 热门标签</div>
+            <div class="tag-cloud">
+                <span class="tag">Python</span>
+                <span class="tag">AI</span>
+                <span class="tag">机器学习</span>
+                <span class="tag">深度学习</span>
+                <span class="tag">数据分析</span>
+                <span class="tag">OpenClaw</span>
+                <span class="tag">算法</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- 主内容区 -->
+    <div class="main-content">
+        <article class="article-header" data-id="/2018/10/27/find_copy">
+    <h1 class="article-title">对比两篇文章重复度</h1>
+
+    <div class="article-meta">
+        
+        <span class="meta-item">
+            <span class="meta-icon">📅</span>
+            2018年10月27日
+        </span>
+        
+        <span class="meta-item">
+            <span class="meta-icon">⏱️</span>
+            <span class="reading-time">--</span> 分钟阅读
+        </span>
+        <span class="meta-item">
+            <span class="meta-icon">👁️</span>
+            5534 阅读
+        </span>
+    </div>
+
+    
+    <div class="article-tags">
+        
+        <span class="tag">#jekyll</span>
+        
+        
+        <a href="http://0.0.0.0:4000/categories/#爬虫" class="tag tag-cat">爬虫</a>
+        
+    </div>
+    
+</article>
+
+<article class="article-content" id="articleContent">
+    <p>本文主要是通过用GUI方式对比两篇文章的重复度，有两种方式：1、微信的链接；2、直接copy文字进行；
+2、并且通过生成exe文件，发布出去</p>
+
+<h3 id="1对比两篇文章的程序">1、对比两篇文章的程序</h3>
+<p>先放图，设计比较粗糙，大家见谅哈：</p>
+
+<p><img src="https://user-images.githubusercontent.com/21167490/47576622-845fb300-d977-11e8-8f4f-cb138273f15a.jpeg" alt="对比文章界面" /></p>
+<pre><code class="language-Python">from tkinter import *
+import re
+from tkinter import scrolledtext
+
+from bs4 import BeautifulSoup
+from urllib.request import urlopen
+
+
+top=Tk()
+top.wm_title("菜单")
+top.geometry("400x400+300+100")
+#top.configure(background='green')#背景绿色
+# 创建一个菜单项，类似于导航栏
+menubar=Menu(top)
+
+# 创建菜单项
+fmenu1=Menu(top)
+for item in ['新建','打开','保存','另存为']:
+    # 如果该菜单时顶层菜单的一个菜单项，则它添加的是下拉菜单的菜单项。
+    fmenu1.add_command(label=item)
+
+# add_cascade 的一个很重要的属性就是 menu 属性，它指明了要把那个菜单级联到该菜单项上，
+# 当然，还必不可少的就是 label 属性，用于指定该菜单项的名称
+menubar.add_cascade(label="文件",menu=fmenu1)
+
+
+# 最后可以用窗口的 menu 属性指定我们使用哪一个作为它的顶层菜单
+top['menu']=menubar
+
+#创建部件
+label1 = Label(top, text='原文章:' )
+label1.grid(row=3, column=0)
+
+entryname1 = scrolledtext.ScrolledText(top, width=80,height=10,background='LightGreen')
+entryname1.grid(row=3, column=1)
+
+#找颜色 https://blog.csdn.net/chl0000/article/details/7657887
+
+label2 = Label(top, text='待验文章:' )
+label2.grid(row=4, column=0)
+# 输入框 (Entry)
+entryname2 = scrolledtext.ScrolledText(top, width=80,height=10,background='LightSkyBlue')
+entryname2.grid(row=4, column=1)
+
+label3 = Label(top, text='对比结果:' )
+label3.grid(row=5, column=0)
+entryname3 = scrolledtext.ScrolledText(top, width=80,height=10,background='tan')
+entryname3.grid(row=5, column=1)
+
+
+label4 = Label(top, text='原文章链接(仅限微信):' )
+label4.grid(row=1, column=0)
+entryname4 = Entry(top, width=30)
+entryname4.grid(row=1, column=1)
+
+
+label5 = Label(top, text='对比文章链接(仅限微信):' )
+label5.grid(row=2, column=0)
+entryname5 = Entry(top, width=30)
+entryname5.grid(row=2, column=1)
+
+
+
+para_pre=''
+para_post=''
+
+
+#清理滚动条内容
+def clear_():
+    global para_pre,para_post
+    para_pre=''
+    para_post=''
+    entryname1.delete('1.0','end')
+    entryname2.delete('1.0','end')
+    entryname3.delete('1.0','end')
+    entryname4.delete(0,END)
+    entryname5.delete(0,END)
+
+# 处理文章，将文章根据标点符号，分割成句子
+def cut_sent(para):
+        para=re.sub('\s+', ' ', para)#去除段落的空格
+        para = re.sub('([。！？\?])([^”])',r"\1\n\2",para) # 单字符断句符
+        para = re.sub('(\.{6})([^”])',r"\1\n\2",para) # 英文省略号
+        para = re.sub('(\…{2})([^”])',r"\1\n\2",para) # 中文省略号
+        para = re.sub('(”)','”\n',para)   # 把分句符\n放到双引号后，注意前面的几句都小心保留了双引号
+        para = para.lstrip(' ')       # 段尾如果有多余的\n就去掉它
+        para = para.rstrip(' ')       # 段尾如果有多余的\n就去掉它
+        #很多规则中会考虑分号;，但是这里我把它忽略不计，破折号、英文双引号等同样忽略，需要的再做些简单调整即可。
+        return para.split("\n")
+
+#处理文章每句话的前后的空格
+def text_line(para):
+        sent_arti=cut_sent(para)
+        sent_arti=[sent_line.strip() for sent_line in sent_arti]
+        return sent_arti
+
+#通过微信链接抓取文章内容
+def get_wx_arcticle(url):#=
+    with urlopen(url) as opurl:
+        html=opurl.read().decode('utf-8')
+    soup =BeautifulSoup(html,features='lxml')
+    #注：soup =BeautifulSoup(html,features='html.parser') 对于需要
+    #在window里用到python3.4，包是py2exe进行转换时，参数需要是html.parser
+    all_href=soup.find_all('p')
+    article=''
+    for i in soup.find_all(name='p'):
+        article=article+i.get_text().strip()
+    return article
+
+#主运行函数
+def main_():
+    global para_pre,para_post
+    url_my=entryname4.get()
+    url_other=entryname5.get()
+
+    #微信链接优先支持
+    if len(url_my)&gt;0 and len(url_other)&gt;0:
+        para_pre=get_wx_arcticle(url_my)
+        para_post=get_wx_arcticle(url_other)
+    else:#手动输入文章
+        para_pre=entryname1.get('1.0', 'end')
+        para_post=entryname2.get('1.0', 'end')
+    sent_pre=text_line(para_pre)
+    sent_post=text_line(para_post)
+
+    #对比文章数据
+    i=0
+    check_result=[]
+    for line in sent_pre:
+        if line in sent_post:
+            i +=1
+            check_result.append(line)
+    #result：就是显示的内容
+    result='这篇文章共发现%s条句子引用'%i +'其中引用句子占原文章%d'%(100*i/len(sent_pre))+'%' +3*'\n' +'重复句子为以下部分:' +2*'\n' +'\n'.join(check_result)
+    entryname3.insert('1.0',result)
+
+
+getname2 = Button(top, text='对比信息', command=main_)
+getname2.grid(row=7, column=1)
+
+getname3 = Button(top, text='清除信息', command=clear_)
+getname3.grid(row=9, column=1)
+
+top.mainloop()
+
+</code></pre>
+<p>对比文章第二版exe下载地址：</p>
+
+<p><a href="https://pan.baidu.com/s/1TRYS4ktAWCGJ81HlkHBDCQ">百度网盘下载</a>  密码:z6e2</p>
+
+<h3 id="2由于本次项目用到了生成exe文件方式在次顺便介绍一下">2、由于本次项目用到了生成exe文件方式，在次顺便介绍一下：</h3>
+
+<p>1、首先要在window环境下操作，本文介绍的用py2exe包转换,py2exe目前只能用python3.3或python3.4，不然会报错类似 <code class="highlighter-rouge">IndexError: tuple index out of range</code> <br />
+2、进入存放要转换.py文件的文件夹<br />
+3、在该文件夹里使用生成一个引导文件，例如叫mysetup.py内容例如下</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">distutils.core</span> <span class="kn">import</span> <span class="n">setup</span>
+<span class="kn">import</span> <span class="nn">py2exe</span>
+
+<span class="n">setup</span><span class="p">(</span><span class="n">windows</span><span class="o">=</span><span class="p">[</span><span class="s">"需要转换的文件.py"</span><span class="p">])</span>
+<span class="c">#setup(console=["find_copy.py"]) #这个也可以</span>
+
+</code></pre></div></div>
+<p>4、在命令行里输入:<code class="highlighter-rouge">python mysetup.py py2exe</code>就可以了</p>
+
+<p>5、之后就可以在自动生成的dist文件夹里找到转成exe的文件了，打包的时候，dist文件都得打包上
+<img src="https://user-images.githubusercontent.com/21167490/47576587-6eea8900-d977-11e8-8182-c3dc162eb1bb.jpeg" alt="dist文件" />
+注意：首先要自己检验一下要转换的文件是否能够正常运行，是否缺少某些包，缺的就补上，否则转成的exe文件无法正常使用。</p>
+
+</article>
+
+<!-- 互动栏 -->
+<div class="interaction-bar" style="display: flex; justify-content: center; gap: 16px; margin: 40px 0; padding: 30px 0; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); flex-wrap: wrap;">
+    <button class="interaction-btn like-btn" data-post-id="/2018/10/27/find_copy">
+        <span class="btn-icon">❤️</span>
+        <span class="count">34</span>
+        <span class="btn-text">点赞</span>
+    </button>
+    <button class="interaction-btn bookmark-btn" data-post-id="/2018/10/27/find_copy">
+        <span class="btn-icon">⭐</span>
+        <span class="btn-text">收藏</span>
+    </button>
+    <button class="interaction-btn" id="commentBtn">
+        <span class="btn-icon">💬</span>
+        <span class="btn-text">评论</span>
+    </button>
+    <button class="interaction-btn share-btn" data-url="http://0.0.0.0:4000/2018/10/27/find_copy/">
+        <span class="btn-icon">🔗</span>
+        <span class="btn-text">分享</span>
+    </button>
+</div>
+
+<!-- 文章导航 -->
+<nav class="post-navigation">
+    
+    <a href="http://0.0.0.0:4000/2018/10/07/taobao_pic/" class="post-nav-item prev">
+        <span class="post-nav-label">← 上一篇</span>
+        <span class="post-nav-title">淘宝商品详情页图片抓取</span>
+    </a>
+    
+
+    
+    <a href="http://0.0.0.0:4000/2026/03/01/AI_Agent-earn-money/" class="post-nav-item next">
+        <span class="post-nav-label">下一篇 →</span>
+        <span class="post-nav-title">Ai_agent Earn Money</span>
+    </a>
+    
+</nav>
+
+<!-- 评论区 -->
+<section class="comments-section" id="commentsSection" style="margin-top: 40px; padding-top: 40px; border-top: 1px solid var(--border-color);">
+    <h3 style="font-size: 20px; color: var(--accent-cyan); margin-bottom: 20px;">💬 评论</h3>
+    
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2018/10/27/find_copy/',
+            clientID: '',
+            clientSecret: '',
+            repo: '',
+            owner: '',
+            admin: [''],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+</section>
+
+<script>
+    // 评论按钮平滑滚动
+    document.addEventListener('DOMContentLoaded', function() {
+        const commentBtn = document.getElementById('commentBtn');
+        if (commentBtn) {
+            commentBtn.addEventListener('click', function() {
+                const commentsSection = document.getElementById('commentsSection');
+                if (commentsSection) {
+                    commentsSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        }
+
+        // 计算阅读时间
+        const articleContent = document.getElementById('articleContent');
+        if (articleContent) {
+            const text = articleContent.textContent || '';
+            const chineseChars = text.match(/[\u4e00-\u9fa5]/g) || [];
+            const wordCount = chineseChars.length + (text.match(/[a-zA-Z]+/g) || []).length;
+            const minutes = Math.max(1, Math.ceil(wordCount / 300));
+
+            const readingTimeEl = document.querySelector('.reading-time');
+            if (readingTimeEl) {
+                readingTimeEl.textContent = minutes;
+            }
+        }
+    });
+</script>
+
+    </div>
+
+    <!-- 右侧边栏 -->
+    <aside class="sidebar sidebar-right">
+        <!-- 作者信息 -->
+        <div class="widget author-card">
+            <div class="author-avatar">
+                H
+            </div>
+            <div class="author-name">Hu Wu</div>
+            <div class="author-bio">
+                阿虎的个人博客 - 记录技术成长之路，分享AI时代的新知与洞见
+            </div>
+            <div class="author-social">
+                <a href="https://github.com/wuhuhu800" class="social-link" target="_blank" title="GitHub">G</a>
+                <a href="mailto:gwuhuhu800@gmail.com" class="social-link" title="Email">@</a>
+                <a href="http://0.0.0.0:4000/feed.xml" class="social-link" title="RSS">R</a>
+            </div>
+        </div>
+
+        <!-- 相关文章（文章页面显示） -->
+        
+        <div class="widget">
+            <div class="widget-title">📚 相关文章</div>
+            <ul class="related-posts">
+                
+            </ul>
+        </div>
+        
+
+        <!-- 热门文章 -->
+        <div class="widget">
+            <div class="widget-title">🔥 热门文章</div>
+            <ul class="related-posts">
+                
+                <li class="related-post">
+                    <a href="http://0.0.0.0:4000/2026/03/01/AI_Agent-earn-money/">Ai_agent Earn Money</a>
+                    <div class="related-post-meta">2026年03月</div>
+                </li>
+                
+                <li class="related-post">
+                    <a href="http://0.0.0.0:4000/2018/10/27/find_copy/">对比两篇文章重复度</a>
+                    <div class="related-post-meta">2018年10月</div>
+                </li>
+                
+                <li class="related-post">
+                    <a href="http://0.0.0.0:4000/2018/10/07/taobao_pic/">淘宝商品详情页图片抓取</a>
+                    <div class="related-post-meta">2018年10月</div>
+                </li>
+                
+                <li class="related-post">
+                    <a href="http://0.0.0.0:4000/2018/07/09/Rubik's-Cube/">三阶魔方新手教程</a>
+                    <div class="related-post-meta">2018年07月</div>
+                </li>
+                
+                <li class="related-post">
+                    <a href="http://0.0.0.0:4000/2018/06/26/pic2pdf/">图片批量转pdf</a>
+                    <div class="related-post-meta">2018年06月</div>
+                </li>
+                
+            </ul>
+        </div>
+
+        <!-- GitHub活动 -->
+        <div class="widget">
+            <div class="widget-title">💻 GitHub</div>
+            <div style="text-align: center; padding: 10px;">
+                <img src="https://ghchart.rshah.org/wuhuhu800"
+                     alt="GitHub Contributions"
+                     style="width: 100%; border-radius: 8px; opacity: 0.8;"
+                     onerror="this.style.display='none'">
+            </div>
+        </div>
+    </aside>
+</main>
+
+    <!-- 悬浮功能按钮 -->
+    <div class="floating-panel">
+        <button class="feature-btn" id="settingsBtn" title="阅读设置">⚙️</button>
+        <button class="feature-btn" id="ttsToggleBtn" title="语音朗读">🔊</button>
+        <button class="feature-btn" id="shareBtn" title="分享文章">📤</button>
+    </div>
+
+    <!-- 设置面板 -->
+    <div class="settings-panel" id="settingsPanel">
+        <div class="setting-item">
+            <div class="setting-label">字体大小</div>
+            <div class="setting-options">
+                <button class="setting-btn" data-setting="fontSize" data-value="small">小</button>
+                <button class="setting-btn active" data-setting="fontSize" data-value="medium">中</button>
+                <button class="setting-btn" data-setting="fontSize" data-value="large">大</button>
+            </div>
+        </div>
+        <div class="setting-item">
+            <div class="setting-label">行宽</div>
+            <div class="setting-options">
+                <button class="setting-btn" data-setting="lineWidth" data-value="narrow">窄</button>
+                <button class="setting-btn active" data-setting="lineWidth" data-value="medium">中</button>
+                <button class="setting-btn" data-setting="lineWidth" data-value="wide">宽</button>
+            </div>
+        </div>
+        <div class="setting-item">
+            <div class="setting-label">行高</div>
+            <div class="setting-options">
+                <button class="setting-btn" data-setting="lineHeight" data-value="compact">紧凑</button>
+                <button class="setting-btn active" data-setting="lineHeight" data-value="comfortable">舒适</button>
+                <button class="setting-btn" data-setting="lineHeight" data-value="relaxed">宽松</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TTS面板 -->
+    <div class="tts-panel" id="ttsPanel">
+        <button class="tts-btn" id="ttsPrev" title="上一段">⏮</button>
+        <button class="tts-btn" id="ttsPlay" title="播放/暂停">▶</button>
+        <button class="tts-btn" id="ttsNext" title="下一段">⏭</button>
+        <div class="tts-progress">
+            <div class="tts-progress-bar" id="ttsProgressBar"></div>
+        </div>
+        <button class="tts-btn" id="ttsClose" title="关闭">✕</button>
+    </div>
+
+    <!-- AI助手 -->
+    <div class="ai-assistant" id="aiAssistant">
+        <div class="ai-tooltip">🤖 AI助手 - 点击询问文章相关问题</div>
+        <button class="ai-btn" id="aiBtn">🤖</button>
+    </div>
+
+    <!-- 返回顶部 -->
+    <button class="back-to-top" id="backToTop" title="返回顶部">↑</button>
+
+    <!-- 页脚 -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>关于</h4>
+                <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.8;">
+                    阿虎的个人博客 - 记录技术成长之路，分享AI时代的新知与洞见
+                </p>
+                <div class="author-social" style="margin-top: 15px;">
+                    <a href="https://github.com/wuhuhu800" class="social-link" target="_blank" title="GitHub">G</a>
+                    <a href="mailto:gwuhuhu800@gmail.com" class="social-link" title="Email">@</a>
+                    <a href="http://0.0.0.0:4000/feed.xml" class="social-link" title="RSS">R</a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h4>导航</h4>
+                <ul>
+                    
+                    <li><a href="http://0.0.0.0:4000/" title="首页">首页</a></li>
+                    
+                    <li><a href="http://0.0.0.0:4000/categories/" title="分类">分类</a></li>
+                    
+                    <li><a href="http://0.0.0.0:4000/wiki/" title="维基">维基</a></li>
+                    
+                    <li><a href="http://0.0.0.0:4000/links/" title="链接">链接</a></li>
+                    
+                    <li><a href="http://0.0.0.0:4000/about/" title="关于">关于</a></li>
+                    
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>统计</h4>
+                <div class="stats-grid" style="grid-template-columns: 1fr;">
+                    <div class="stat-item" style="text-align: left; display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 20px;">📝</span>
+                        <div>
+                            <div class="stat-value" style="font-size: 16px;">12</div>
+                            <div class="stat-label">篇文章</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h4>技术</h4>
+                <p style="color: var(--text-secondary); font-size: 13px; line-height: 1.8;">
+                    使用 <a href="https://jekyllrb.com" target="_blank">Jekyll</a> 构建<br>
+                    主题：赛博朋克科技风 v2.1<br>
+                    按 <strong style="color: var(--accent-cyan);">Shift+?</strong> 查看快捷键
+                </p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="footer-copyright">
+                © 2026 Hu Wu · 保留所有权利
+            </div>
+            <div style="display: flex; gap: 20px; font-size: 13px; color: var(--text-muted);">
+                <a href="#" style="color: var(--text-muted);">隐私政策</a>
+                <a href="#" style="color: var(--text-muted);">使用条款</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 赛博朋克主题脚本 -->
+    <script src="http://0.0.0.0:4000/assets/js/cyberpunk-theme.js"></script>
+
+    <!-- Mermaid初始化 -->
+    
+
+    <!-- KaTeX初始化 -->
+    
+
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111499340-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-111499340-1');
+    </script>
+    
+</body>
+</html>
+

@@ -3,45 +3,52 @@
   
     {
       "title"    : "页面没有找到",
-      "url"      : "http://localhost:4000/404.html"
+      "url"      : "http://0.0.0.0:4000/404.html"
     } ,
   
   
   
     {
       "title"    : "About",
-      "url"      : "http://localhost:4000/about/"
+      "url"      : "http://0.0.0.0:4000/about/"
     } ,
   
   
   
     {
       "title"    : "Categories",
-      "url"      : "http://localhost:4000/categories/"
+      "url"      : "http://0.0.0.0:4000/categories/"
     } ,
   
   
+  
+    {
+      "title"    : "首页",
+      "url"      : "http://0.0.0.0:4000/"
+    } ,
   
   
   
     {
       "title"    : "我的第二个博客",
-      "url"      : "http://localhost:4000/my_collection/study/learn/"
+      "url"      : "http://0.0.0.0:4000/my_collection/study/learn/"
     } ,
   
   
   
     {
       "title"    : "Links",
-      "url"      : "http://localhost:4000/links/"
+      "url"      : "http://0.0.0.0:4000/links/"
     } ,
   
   
   
     {
       "title"    : "Open Source Projects",
-      "url"      : "http://localhost:4000/open-source/"
+      "url"      : "http://0.0.0.0:4000/open-source/"
     } ,
+  
+  
   
   
   
@@ -49,7 +56,7 @@
   
     {
       "title"    : "Wiki",
-      "url"      : "http://localhost:4000/wiki/"
+      "url"      : "http://0.0.0.0:4000/wiki/"
     } ,
   
   
@@ -60,10 +67,17 @@
   
     {
       "title"    : "码志",
-      "url"      : "http://localhost:4000/README%202/"
+      "url"      : "http://0.0.0.0:4000/README%202/"
     } ,
   
   
+  
+  
+  
+    {
+      "title"    : "首页",
+      "url"      : "http://0.0.0.0:4000/page2/"
+    } ,
   
   
   
@@ -75,31 +89,73 @@
     {
       "title"    : "【转】摄影教训总结",
       "category" : "Blog",
-      "url"      : "http://localhost:4000/2014/08/26/takephotos/"
-    } ,
-  
-    {
-      "title"    : "【转】解决两个 Android 模拟器之间无法网络通信的问题",
-      "category" : "Android",
-      "url"      : "http://localhost:4000/2017/12/03/tcp-connect-between-android-emulators/"
-    } ,
-  
-    {
-      "title"    : "测试jekyll功能",
-      "category" : "练习",
-      "url"      : "http://localhost:4000/2017/12/21/start/"
+      "url"      : "http://0.0.0.0:4000/2014/08/26/takephotos/"
     } ,
   
     {
       "title"    : "XGBoost 参数调优(python)",
       "category" : "机器学习",
-      "url"      : "http://localhost:4000/2018/02/28/XGboost_param_share/"
+      "url"      : "http://0.0.0.0:4000/2018/02/28/XGboost_param_share/"
     } ,
   
     {
       "title"    : "XGBoost 参数官方文档翻译",
       "category" : "机器学习",
-      "url"      : "http://localhost:4000/2018/02/28/xgboost_parameters/"
+      "url"      : "http://0.0.0.0:4000/2018/02/28/xgboost_parameters/"
+    } ,
+  
+    {
+      "title"    : "天池比赛之盐城汽车销量预测比赛经验随想",
+      "category" : "比赛",
+      "url"      : "http://0.0.0.0:4000/2018/03/17/Tianchi_competiton_impressive_points/"
+    } ,
+  
+    {
+      "title"    : "learning from data 1st lession notes",
+      "category" : "机器学习",
+      "url"      : "http://0.0.0.0:4000/2018/03/24/learning-from-data-01/"
+    } ,
+  
+    {
+      "title"    : "learning from data 2nd lession notes",
+      "category" : "机器学习",
+      "url"      : "http://0.0.0.0:4000/2018/03/28/learning-from-data-02/"
+    } ,
+  
+    {
+      "title"    : "安装ubuntu 16.04LTS + Anaconda3 +cuda9.1+cudnn7.1.3+tensorflow1.7+python3",
+      "category" : "深度学习",
+      "url"      : "http://0.0.0.0:4000/2018/05/02/for-ubuntu16.04+Anaconda3+cuda9.1+cudnn7.1.3/"
+    } ,
+  
+    {
+      "title"    : "图片批量转pdf",
+      "category" : "python",
+      "url"      : "http://0.0.0.0:4000/2018/06/26/pic2pdf/"
+    } ,
+  
+    {
+      "title"    : "三阶魔方新手教程",
+      "category" : "其他",
+      "url"      : "http://0.0.0.0:4000/2018/07/09/Rubik's-Cube/"
+    } ,
+  
+    {
+      "title"    : "淘宝商品详情页图片抓取",
+      "category" : "爬虫",
+      "url"      : "http://0.0.0.0:4000/2018/10/07/taobao_pic/"
+    } ,
+  
+    {
+      "title"    : "对比两篇文章重复度",
+      "category" : "爬虫",
+      "url"      : "http://0.0.0.0:4000/2018/10/27/find_copy/"
+    } ,
+  
+    {
+      "title"    : "Ai_agent Earn Money",
+      "category" : "",
+      "url"      : "http://0.0.0.0:4000/2026/03/01/AI_Agent-earn-money/"
     } 
   
 ]

@@ -1,3 +1,118 @@
 {% include header.html %}
-    {{ content }}
+
+<main class="main-container">
+    <!-- 左侧边栏 -->
+    <aside class="sidebar sidebar-left">
+        <!-- 数据统计 -->
+        <div class="widget">
+            <div class="widget-title">📊 数据统计</div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value">{{ site.posts.size }}</div>
+                    <div class="stat-label">文章</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">12.5k</div>
+                    <div class="stat-label">阅读</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">1.2k</div>
+                    <div class="stat-label">点赞</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">89</div>
+                    <div class="stat-label">评论</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 文章目录（文章页面显示） -->
+        {% if page.layout == 'post' %}
+        <div class="widget toc-widget">
+            <div class="widget-title">📑 文章目录</div>
+            <ul class="toc-list" id="tocList">
+                <li style="color: var(--text-muted);">加载中...</li>
+            </ul>
+        </div>
+        {% endif %}
+
+        <!-- 热门标签 -->
+        <div class="widget">
+            <div class="widget-title">🏷️ 热门标签</div>
+            <div class="tag-cloud">
+                <span class="tag">Python</span>
+                <span class="tag">AI</span>
+                <span class="tag">机器学习</span>
+                <span class="tag">深度学习</span>
+                <span class="tag">数据分析</span>
+                <span class="tag">OpenClaw</span>
+                <span class="tag">算法</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- 主内容区 -->
+    <div class="main-content">
+        {{ content }}
+    </div>
+
+    <!-- 右侧边栏 -->
+    <aside class="sidebar sidebar-right">
+        <!-- 作者信息 -->
+        <div class="widget author-card">
+            <div class="author-avatar">
+                {{ site.author | slice: 0 }}
+            </div>
+            <div class="author-name">{{ site.author }}</div>
+            <div class="author-bio">
+                {{ site.description }}
+            </div>
+            <div class="author-social">
+                <a href="https://github.com/{{ site.github_username }}" class="social-link" target="_blank" title="GitHub">G</a>
+                <a href="mailto:{{ site.email }}" class="social-link" title="Email">@</a>
+                <a href="{{ site.url }}{{ site.subscribe_rss }}" class="social-link" title="RSS">R</a>
+            </div>
+        </div>
+
+        <!-- 相关文章（文章页面显示） -->
+        {% if page.layout == 'post' %}
+        <div class="widget">
+            <div class="widget-title">📚 相关文章</div>
+            <ul class="related-posts">
+                {% for post in site.related_posts limit:5 %}
+                <li class="related-post">
+                    <a href="{{ site.url }}{{ post.url }}">{{ post.title }}</a>
+                    <div class="related-post-meta">{{ post.date | date: "%Y年%m月" }}</div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <!-- 热门文章 -->
+        <div class="widget">
+            <div class="widget-title">🔥 热门文章</div>
+            <ul class="related-posts">
+                {% for post in site.posts limit:5 %}
+                <li class="related-post">
+                    <a href="{{ site.url }}{{ post.url }}">{{ post.title }}</a>
+                    <div class="related-post-meta">{{ post.date | date: "%Y年%m月" }}</div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- GitHub活动 -->
+        <div class="widget">
+            <div class="widget-title">💻 GitHub</div>
+            <div style="text-align: center; padding: 10px;">
+                <img src="https://ghchart.rshah.org/{{ site.github_username }}"
+                     alt="GitHub Contributions"
+                     style="width: 100%; border-radius: 8px; opacity: 0.8;"
+                     onerror="this.style.display='none'">
+            </div>
+        </div>
+    </aside>
+</main>
+
 {% include footer.html %}

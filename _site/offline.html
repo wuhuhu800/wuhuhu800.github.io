@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>离线模式 - 问道</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans SC', sans-serif;
+            background: #0d1117;
+            color: #e6edf3;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .icon {
+            font-size: 80px;
+            margin-bottom: 30px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #00f5ff, #bf00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p {
+            color: #8b949e;
+            font-size: 16px;
+            line-height: 1.6;
+            max-width: 400px;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #00f5ff, #bf00ff);
+            color: #000;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 245, 255, 0.3);
+        }
+
+        .cached-posts {
+            margin-top: 40px;
+            padding: 20px;
+            background: rgba(22, 27, 34, 0.8);
+            border: 1px solid rgba(0, 245, 255, 0.2);
+            border-radius: 12px;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .cached-posts h2 {
+            font-size: 16px;
+            color: #00f5ff;
+            margin-bottom: 15px;
+        }
+
+        .cached-posts ul {
+            list-style: none;
+        }
+
+        .cached-posts li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(0, 245, 255, 0.1);
+        }
+
+        .cached-posts li:last-child {
+            border-bottom: none;
+        }
+
+        .cached-posts a {
+            color: #e6edf3;
+            text-decoration: none;
+        }
+
+        .cached-posts a:hover {
+            color: #00f5ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="icon">📡</div>
+    <h1>您当前处于离线模式</h1>
+    <p>无法连接到网络，但您仍然可以访问已缓存的文章。请检查您的网络连接后重试。</p>
+    <a href="/" class="btn">返回首页</a>
+
+    <div class="cached-posts">
+        <h2>📚 已缓存的文章</h2>
+        <ul id="cachedList">
+            <li>正在加载缓存内容...</li>
+        </ul>
+    </div>
+
+    <script>
+        // 尝试从缓存中获取已保存的文章列表
+        if ('caches' in window) {
+            caches.open('cyberpunk-pages-v1').then(cache => {
+                cache.keys().then(keys => {
+                    const list = document.getElementById('cachedList');
+                    const posts = keys
+                        .filter(request => request.url.includes('/20')) // 简单的文章URL过滤
+                        .slice(0, 10);
+
+                    if (posts.length > 0) {
+                        list.innerHTML = posts.map(request => {
+                            const url = new URL(request.url);
+                            const path = url.pathname;
+                            const title = path.split('/').pop().replace(/-/g, ' ');
+                            return `<li><a href="${path}">${title}</a></li>`;
+                        }).join('');
+                    } else {
+                        list.innerHTML = '<li>暂无缓存的文章</li>';
+                    }
+                });
+            }).catch(() => {
+                document.getElementById('cachedList').innerHTML = '<li>无法访问缓存</li>';
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>图片批量转pdf — 问道</title>
+
+    <!-- 赛博朋克主题样式 -->
+    <link rel="stylesheet" href="http://0.0.0.0:4000/assets/css/cyberpunk-theme.css">
+
+    <!-- 字体 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    
+
+    <!-- SEO Meta Tags -->
+    <link rel="canonical" href="http://0.0.0.0:4000/2018/06/26/pic2pdf/">
+    <link rel="alternate" type="application/atom+xml" title="问道" href="http://0.0.0.0:4000/feed.xml">
+    <link rel="icon" type="image/svg+xml" href="http://0.0.0.0:4000/favicon.svg">
+    <link rel="alternate icon" href="http://0.0.0.0:4000/favicon.ico">
+
+    
+    <meta property="og:title" content="图片批量转pdf">
+    
+    <meta name="keywords" content="pdf,jpg,python">
+    <meta name="og:keywords" content="pdf,jpg,python">
+    
+    <meta name="description" content="意外原因，获得了一份网络上流通传逻辑思维《关系攻略》的截图版本，全部是图片，极不方便阅读，所以打算把截图转为PDF格式，以下就是本次的的方法参考 python长图片切割并转换为pdf">
+    <meta name="og:description" content="意外原因，获得了一份网络上流通传逻辑思维《关系攻略》的截图版本，全部是图片，极不方便阅读，所以打算把截图转为PDF格式，以下就是本次的的方法参考 python长图片切割并转换为pdf">
+    
+    
+
+    
+
+    <meta property="og:url" content="http://0.0.0.0:4000/2018/06/26/pic2pdf/">
+    <meta property="og:site_name" content="问道">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+
+    
+    <meta property="article:published_time" content="2018-06-26">
+    
+
+    <!-- PWA -->
+    <link rel="manifest" href="http://0.0.0.0:4000/manifest.json">
+    <meta name="theme-color" content="#0d1117">
+
+    <!-- 页面特定CSS -->
+    
+
+    <!-- Mermaid -->
+    
+
+    <!-- KaTeX -->
+    
+</head>
+
+<body class="" data-mz="">
+    <!-- 网格背景 -->
+    <div class="cyber-grid"></div>
+
+    <!-- 阅读进度条 -->
+    <div class="reading-progress" id="readingProgress" style="width: 0%"></div>
+
+    <!-- 头部导航 -->
+    <header class="site-header">
+        <a href="http://0.0.0.0:4000/" class="site-logo" title="问道">
+            问道
+        </a>
+
+        <nav class="site-nav" role="navigation">
+            
+            <a href="http://0.0.0.0:4000/"
+               class=""
+               target="_self"
+               title="首页">
+                首页
+            </a>
+            
+            <a href="http://0.0.0.0:4000/categories/"
+               class=""
+               target="_self"
+               title="分类">
+                分类
+            </a>
+            
+            <a href="http://0.0.0.0:4000/wiki/"
+               class=""
+               target="_self"
+               title="维基">
+                维基
+            </a>
+            
+            <a href="http://0.0.0.0:4000/links/"
+               class=""
+               target="_self"
+               title="链接">
+                链接
+            </a>
+            
+            <a href="http://0.0.0.0:4000/about/"
+               class=""
+               target="_self"
+               title="关于">
+                关于
+            </a>
+            
+        </nav>
+
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <!-- 搜索框 -->
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" placeholder="搜索文章..." id="searchInput">
+            </div>
+
+            <!-- 主题切换 -->
+            <button class="theme-toggle" id="themeToggle" title="切换主题">🌙</button>
+
+            <!-- 移动端菜单按钮 -->
+            <button class="mobile-menu-btn" id="mobileMenuBtn" title="菜单">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+    <!-- / header -->
+
+
+<main class="main-container">
+    <!-- 左侧边栏 -->
+    <aside class="sidebar sidebar-left">
+        <!-- 数据统计 -->
+        <div class="widget">
+            <div class="widget-title">📊 数据统计</div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value">12</div>
+                    <div class="stat-label">文章</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">12.5k</div>
+                    <div class="stat-label">阅读</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">1.2k</div>
+                    <div class="stat-label">点赞</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">89</div>
+                    <div class="stat-label">评论</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 文章目录（文章页面显示） -->
+        
+        <div class="widget toc-widget">
+            <div class="widget-title">📑 文章目录</div>
+            <ul class="toc-list" id="tocList">
+                <li style="color: var(--text-muted);">加载中...</li>
+            </ul>
+        </div>
+        
+
+        <!-- 热门标签 -->
+        <div class="widget">
+            <div class="widget-title">🏷️ 热门标签</div>
+            <div class="tag-cloud">
+                <span class="tag">Python</span>
+                <span class="tag">AI</span>
+                <span class="tag">机器学习</span>
+                <span class="tag">深度学习</span>
+                <span class="tag">数据分析</span>
+                <span class="tag">OpenClaw</span>
+                <span class="tag">算法</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- 主内容区 -->
+    <div class="main-content">
+        <article class="article-header" data-id="/2018/06/26/pic2pdf">
+    <h1 class="article-title">图片批量转pdf</h1>
+
+    <div class="article-meta">
+        
+        <span class="meta-item">
+            <span class="meta-icon">📅</span>
+            2018年06月26日
+        </span>
+        
+        <span class="meta-item">
+            <span class="meta-icon">⏱️</span>
+            <span class="reading-time">--</span> 分钟阅读
+        </span>
+        <span class="meta-item">
+            <span class="meta-icon">👁️</span>
+            38551 阅读
+        </span>
+    </div>
+
+    
+    <div class="article-tags">
+        
+        <span class="tag">#jekyll</span>
+        
+        
+        <a href="http://0.0.0.0:4000/categories/#python" class="tag tag-cat">python</a>
+        
+    </div>
+    
+</article>
+
+<article class="article-content" id="articleContent">
+    <p>意外原因，获得了一份网络上流通传逻辑思维《关系攻略》的截图版本，全部是图片，极不方便阅读，所以打算把截图转为PDF格式，以下就是本次的的方法
+参考 <a href="https://blog.csdn.net/chaochao670/article/details/79349196">python长图片切割并转换为pdf</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="c">#from PIL import Image</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>  
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">reportlab.pdfgen</span> <span class="kn">import</span> <span class="n">canvas</span>
+<span class="kn">from</span> <span class="nn">reportlab.lib.units</span> <span class="kn">import</span> <span class="n">inch</span><span class="p">,</span> <span class="n">cm</span>
+<span class="kn">from</span> <span class="nn">reportlab.lib.pagesizes</span> <span class="kn">import</span> <span class="n">letter</span>
+<span class="kn">from</span> <span class="nn">reportlab.platypus</span> <span class="kn">import</span> <span class="n">SimpleDocTemplate</span><span class="p">,</span> <span class="n">Paragraph</span><span class="p">,</span> <span class="n">Image</span><span class="p">,</span> <span class="n">PageBreak</span>
+<span class="kn">from</span> <span class="nn">reportlab.lib.pagesizes</span> <span class="kn">import</span> <span class="n">A4</span><span class="p">,</span><span class="n">A3</span><span class="p">,</span><span class="n">A2</span><span class="p">,</span><span class="n">A1</span><span class="p">,</span> <span class="n">legal</span><span class="p">,</span> <span class="n">landscape</span>
+<span class="kn">from</span> <span class="nn">reportlab.lib.utils</span> <span class="kn">import</span> <span class="n">ImageReader</span>
+<span class="kn">import</span> <span class="nn">PIL.ExifTags</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">listdir</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">reportlab.lib.units</span> <span class="kn">import</span> <span class="n">inch</span>
+<span class="kn">import</span> <span class="nn">PIL.Image</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="c">#解决报错OSError: image file is truncated (9 bytes not processed)</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">ImageFile</span>
+<span class="n">ImageFile</span><span class="o">.</span><span class="n">LOAD_TRUNCATED_IMAGES</span> <span class="o">=</span> <span class="bp">True</span>
+</code></pre></div></div>
+
+<h3 id="把文件从不同的文件夹里抓出来同时将图片切成a4比例并且给以图片编号">把文件从不同的文件夹里抓出来，同时将图片切成A4比例，并且给以图片编号</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 抓取文件的路径</span>
+<span class="n">filedir</span><span class="o">=</span><span class="s">'../Desktop/未命名文件夹2/cuang/'</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">re</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="nb">compile</span><span class="p">(</span><span class="s">r'.*?jpg'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 保存抓取后的结果的路径</span>
+<span class="n">dstpath</span><span class="o">=</span><span class="s">'../Desktop/未命名文件夹2/relation'</span>
+<span class="k">def</span> <span class="nf">mkdir_if_not_exist</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="n">mkdir_if_not_exist</span><span class="p">(</span><span class="n">dstpath</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 将文件切割成A4比例，并且保存</span>
+<span class="k">def</span> <span class="nf">splitimage</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dstpath</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">k</span> <span class="c">#给图片排序</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">PIL</span><span class="o">.</span><span class="n">Image</span><span class="o">.</span><span class="nb">open</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
+    <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">height</span><span class="o">=</span><span class="n">w</span><span class="o">*</span><span class="mi">297</span><span class="o">/</span><span class="mi">210</span> <span class="c">#A4纸比例出的高度</span>
+    <span class="n">num</span><span class="o">=</span><span class="n">h</span><span class="o">/</span><span class="n">height</span><span class="o">+</span><span class="mi">1</span><span class="c">#将分割出的图片数量</span>
+    <span class="n">index</span><span class="o">=</span><span class="mi">1</span>
+    <span class="n">base_h</span><span class="o">=</span><span class="n">height</span> <span class="c">#之后做图片切割的间隔</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">src</span><span class="p">)</span><span class="c">#分割出路径和文件名</span>
+    <span class="k">if</span> <span class="n">dstpath</span> <span class="o">==</span> <span class="s">''</span><span class="p">:</span>
+        <span class="n">dstpath</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">fn</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'.'</span><span class="p">)</span>
+    <span class="n">basename</span> <span class="o">=</span> <span class="n">fn</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="c">#文件名</span>
+    <span class="n">postfix</span> <span class="o">=</span> <span class="n">fn</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="c">#后缀名</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="n">index</span> <span class="o">&lt;</span> <span class="n">num</span><span class="p">):</span>
+        <span class="c">#print('The index is:', index,"height is ",height)</span>
+        <span class="n">box</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">height</span><span class="o">-</span><span class="n">base_h</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+        <span class="n">img</span><span class="o">.</span><span class="n">crop</span><span class="p">(</span><span class="n">box</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dstpath</span><span class="p">,</span> <span class="n">basename</span> <span class="o">+</span> <span class="s">'_'</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="o">+</span> <span class="s">'_'</span> <span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">+</span><span class="s">'.'</span> <span class="o">+</span> <span class="n">postfix</span><span class="p">),</span> <span class="n">img</span><span class="o">.</span><span class="n">format</span><span class="p">)</span>
+        <span class="n">height</span> <span class="o">=</span> <span class="n">height</span> <span class="o">+</span> <span class="n">base_h</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">k</span> <span class="o">=</span><span class="n">k</span> <span class="o">+</span><span class="mi">1</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#查看一下遍历的顺序是否正确，如果上1~10+的话，最好1~9改为01~09，不然会遍历顺序会上1，10，11，12，2，3，</span>
+<span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">filedir</span><span class="p">)):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">files</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 图片抓取</span>
+<span class="n">k</span><span class="o">=</span><span class="mi">0</span>
+<span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">filedir</span><span class="p">)):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+        <span class="n">obpath</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">obpath</span><span class="p">)</span> <span class="o">!=</span><span class="bp">None</span><span class="p">:</span>
+          <span class="n">splitimage</span><span class="p">(</span><span class="n">obpath</span><span class="p">,</span> <span class="n">dstpath</span><span class="p">)</span>  
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>94it [02:14,  1.43s/it]
+</code></pre></div></div>
+
+<p>dir2=’../Desktop/未命名文件夹2/pdftest’
+dir3=’../Desktop/未命名文件夹2/pdftest2’</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rm</span> <span class="o">-</span><span class="n">rf</span> <span class="o">../</span><span class="n">Desktop</span><span class="o">/</span><span class="err">未命名文件夹</span><span class="mi">2</span><span class="o">/</span><span class="n">relation</span><span class="o">/.</span><span class="n">DS_Store</span> <span class="c">#针对mac，删除.DS_Store文件，</span>
+</code></pre></div></div>
+
+<h3 id="建议用imageoptim进行优化图片压缩至50几乎不影响质量">建议用ImageOptim进行优化图片，压缩至50%，几乎不影响质量</h3>
+
+<ul>
+  <li>压缩比例最多可以压缩50%；</li>
+  <li>压缩速度快</li>
+  <li>支持批量压缩</li>
+  <li>免费</li>
+</ul>
+
+<h3 id="将图片转换为pdf">将图片转换为pdf</h3>
+
+<h4 id="方法一reportlab-批量将图片转为pdf">方法一：reportlab 批量将图片转为PDF</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">rotate_img_to_proper</span><span class="p">(</span><span class="n">image</span><span class="p">):</span> <span class="c">#如果图片打开是被旋转了，则需要纠正</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c"># image = Image.open(filename)</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s">'_getexif'</span><span class="p">):</span>  <span class="c"># only present in JPEGs</span>
+            <span class="k">for</span> <span class="n">orientation</span> <span class="ow">in</span> <span class="n">PIL</span><span class="o">.</span><span class="n">ExifTags</span><span class="o">.</span><span class="n">TAGS</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">PIL</span><span class="o">.</span><span class="n">ExifTags</span><span class="o">.</span><span class="n">TAGS</span><span class="p">[</span><span class="n">orientation</span><span class="p">]</span> <span class="o">==</span> <span class="s">'Orientation'</span><span class="p">:</span>
+                    <span class="k">break</span>
+            <span class="n">e</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">_getexif</span><span class="p">()</span>  <span class="c"># returns None if no EXIF data</span>
+            <span class="k">if</span> <span class="n">e</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="c">#log.info('EXIF data found: %r', e)</span>
+                <span class="n">exif</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+                <span class="n">orientation</span> <span class="o">=</span> <span class="n">exif</span><span class="p">[</span><span class="n">orientation</span><span class="p">]</span>
+                <span class="c"># print('found, ',orientation)</span>
+
+                <span class="k">if</span> <span class="n">orientation</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                    <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">ROTATE_180</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">orientation</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+                    <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">ROTATE_270</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">orientation</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>
+                    <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="mi">90</span><span class="p">,</span><span class="n">expand</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">return</span> <span class="n">image</span>
+
+<span class="c">#将图片打开保存为pdf,dir2读取文件的目录，output_file_name是输出文件的名，注意需要以pdf结尾</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">dir2</span><span class="p">,</span><span class="n">output_file_name</span><span class="p">):</span>
+    <span class="n">imgDoc</span> <span class="o">=</span> <span class="n">canvas</span><span class="o">.</span><span class="n">Canvas</span><span class="p">(</span><span class="n">output_file_name</span><span class="p">)</span><span class="c">#pagesize=letter</span>
+    <span class="n">imgDoc</span><span class="o">.</span><span class="n">setPageSize</span><span class="p">(</span><span class="n">A4</span><span class="p">)</span>
+    <span class="n">document_width</span><span class="p">,</span><span class="n">document_height</span> <span class="o">=</span> <span class="n">A4</span>
+
+    <span class="k">for</span> <span class="n">root2</span><span class="p">,</span> <span class="n">dirs2</span><span class="p">,</span> <span class="n">files2</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">dir2</span><span class="p">):</span>
+        <span class="n">j</span><span class="o">=</span><span class="mi">0</span>
+        <span class="c">#sorted保证按照顺序</span>
+        <span class="k">for</span> <span class="n">i2</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">files2</span><span class="p">,</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'_'</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'.'</span><span class="p">)[</span><span class="mi">0</span><span class="p">])):</span>
+            <span class="n">obpath2</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root2</span><span class="p">,</span><span class="n">i2</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">image_file</span> <span class="o">=</span> <span class="n">PIL</span><span class="o">.</span><span class="n">Image</span><span class="o">.</span><span class="nb">open</span><span class="p">(</span><span class="n">obpath2</span><span class="p">)</span>
+                <span class="n">image_file</span> <span class="o">=</span> <span class="n">rotate_img_to_proper</span><span class="p">(</span><span class="n">image_file</span><span class="p">)</span>
+
+                <span class="n">image_width</span><span class="p">,</span><span class="n">image_height</span> <span class="o">=</span> <span class="n">image_file</span><span class="o">.</span><span class="n">size</span>
+                <span class="k">print</span><span class="p">(</span><span class="n">image_file</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="n">image_width</span><span class="o">&gt;</span><span class="mi">0</span> <span class="ow">and</span> <span class="n">image_height</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="nb">Exception</span>
+                <span class="n">image_aspect</span> <span class="o">=</span> <span class="n">image_height</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">image_width</span><span class="p">)</span>
+                <span class="c">#Determins the demensions of the image in the overview</span>
+                <span class="n">print_width</span>  <span class="o">=</span> <span class="n">document_width</span>
+                <span class="n">print_height</span> <span class="o">=</span> <span class="n">document_width</span><span class="o">*</span><span class="n">image_aspect</span>
+                <span class="n">imgDoc</span><span class="o">.</span><span class="n">drawImage</span><span class="p">(</span><span class="n">ImageReader</span><span class="p">(</span><span class="n">image_file</span><span class="p">),</span><span class="n">document_width</span><span class="o">-</span><span class="n">print_width</span><span class="p">,</span>
+                             <span class="n">document_height</span><span class="o">-</span><span class="n">print_height</span><span class="p">,</span><span class="n">width</span><span class="o">=</span><span class="n">print_width</span><span class="p">,</span>
+                                 <span class="n">height</span><span class="o">=</span><span class="n">print_height</span><span class="p">,</span><span class="n">preserveAspectRatio</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+                <span class="c">#inform the reportlab we want a new page</span>
+                <span class="n">imgDoc</span><span class="o">.</span><span class="n">showPage</span><span class="p">()</span>
+                <span class="n">j</span> <span class="o">+=</span><span class="mi">1</span>
+                <span class="k">if</span> <span class="n">j</span><span class="o">%</span><span class="mi">2000</span> <span class="o">==</span><span class="mi">0</span><span class="p">:</span><span class="c">#由于不支持巨量图片转pdf，只能分步保存</span>
+                    <span class="n">imgDoc</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                    <span class="n">output_file_name</span><span class="o">=</span><span class="s">'../Desktop/未命名文件夹2/relationship'</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="o">+</span><span class="s">'.pdf'</span>
+                    <span class="n">imgDoc</span> <span class="o">=</span> <span class="n">canvas</span><span class="o">.</span><span class="n">Canvas</span><span class="p">(</span><span class="n">output_file_name</span><span class="p">)</span><span class="c">#pagesize=letter</span>
+                    <span class="n">imgDoc</span><span class="o">.</span><span class="n">setPageSize</span><span class="p">(</span><span class="n">A4</span><span class="p">)</span>
+            <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">'error:'</span><span class="p">,</span><span class="n">e</span><span class="p">,</span><span class="n">obpath2</span><span class="p">)</span>
+    <span class="n">imgDoc</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'Done'</span><span class="p">)</span>
+
+
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">output_file_name</span> <span class="o">=</span> <span class="s">'../Desktop/未命名文件夹2/relationship.pdf'</span><span class="c">#pdf文件保存的位置</span>
+<span class="n">main</span><span class="p">(</span><span class="n">dstpath</span><span class="p">,</span><span class="n">output_file_name</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">结论：</span>
+<span class="err">图片大小为</span><span class="mi">779</span><span class="n">M</span><span class="p">,</span><span class="err">转换完之后</span><span class="mf">3.33</span><span class="n">G</span>
+<span class="err">图片转换完成时间</span><span class="mi">20</span><span class="err">分钟</span>
+<span class="err">图片无法一次性全部转换完</span>
+</code></pre></div></div>
+
+<h4 id="方法二img2pdf">方法二：img2pdf</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">img2pdf</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">filelist</span><span class="o">=</span><span class="p">[]</span>
+<span class="k">for</span> <span class="n">root2</span><span class="p">,</span> <span class="n">dirs2</span><span class="p">,</span> <span class="n">files2</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">dstpath</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i2</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">files2</span><span class="p">,</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'_'</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'.'</span><span class="p">)[</span><span class="mi">0</span><span class="p">])):</span>
+            <span class="n">obpath2</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root2</span><span class="p">,</span><span class="n">i2</span><span class="p">)</span>
+            <span class="n">filelist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obpath2</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">"../Desktop/未命名文件夹2/创业课.pdf"</span><span class="p">,</span> <span class="s">"wb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">img2pdf</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">filelist</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>81082300
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">结论：</span>
+<span class="err">图片大小为</span><span class="mi">779</span><span class="n">M</span><span class="p">,</span><span class="err">转换完之后</span><span class="mi">782</span><span class="n">M</span>
+<span class="err">图片转换完成时间</span><span class="o">&lt;</span><span class="mi">1</span><span class="err">分钟</span>
+<span class="err">图片可以一次性全部转换完</span>
+<span class="err">代码少</span>
+</code></pre></div></div>
+
+<h4 id="方法三fpdf">方法三：fpdf</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">fpdf</span> <span class="kn">import</span> <span class="n">FPDF</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">filelist2</span><span class="o">=</span><span class="p">[]</span>
+<span class="k">for</span> <span class="n">root2</span><span class="p">,</span> <span class="n">dirs2</span><span class="p">,</span> <span class="n">files2</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">dir2</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i2</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">files2</span><span class="p">,</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'_'</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'.'</span><span class="p">)[</span><span class="mi">0</span><span class="p">])):</span>
+            <span class="n">obpath2</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root2</span><span class="p">,</span><span class="n">i2</span><span class="p">)</span>
+            <span class="n">filelist2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obpath2</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pdf</span> <span class="o">=</span> <span class="n">FPDF</span><span class="p">()</span>
+<span class="c"># imagelist is the list with all image filenames</span>
+<span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">filelist2</span><span class="p">:</span>
+    <span class="n">pdf</span><span class="o">.</span><span class="n">add_page</span><span class="p">()</span>
+    <span class="n">pdf</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+<span class="n">pdf</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s">"../Desktop/未命名文件夹2/output4.pdf"</span><span class="p">,</span> <span class="s">"F"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>''
+</code></pre></div></div>
+
+<p>结论： <br />
+没有转换成功，再继续研究下去。因为img2pdf已经足够我用了</p>
+
+<p>启发： <br />
+搜索解决方案的时候，中文搜完之后，最好用英文再搜一下，直到高频出现几个关键词，然后再开始尝试。</p>
+
+<h3 id="识别文字">识别文字</h3>
+
+<h4 id="方法一pypdf2-主要是英文">方法一：PyPDF2 主要是英文</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">PyPDF2</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">newfile</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="s">'../Desktop/未命名文件夹2/hello.txt'</span><span class="p">,</span><span class="s">'w'</span><span class="p">)</span>
+<span class="nb">file</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="s">'../Desktop/未命名文件夹2/OReilly.Hands-On.Machine.Learning.with.Scikit-Learn.and.TensorFlow.2017.3.pdf'</span><span class="p">,</span><span class="s">'rb'</span><span class="p">)</span>
+<span class="n">pdfreader</span><span class="o">=</span><span class="n">PyPDF2</span><span class="o">.</span><span class="n">PdfFileReader</span><span class="p">(</span><span class="nb">file</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">pdfreader</span><span class="o">.</span><span class="n">getNumPages</span><span class="p">())</span>
+<span class="n">pageobj</span><span class="o">=</span><span class="n">pdfreader</span><span class="o">.</span><span class="n">getPage</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span>
+<span class="n">newfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pageobj</span><span class="o">.</span><span class="n">extractText</span><span class="p">())</span>
+<span class="nb">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">newfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>564
+
+
+
+
+
+2298
+</code></pre></div></div>
+
+<h4 id="pytesseract模块">pytesseract模块</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#首先安装tesseract： brew install tesseract</span>
+<span class="c">#如果需要中文'chi_sim'</span>
+<span class="c">#下载中文包https://raw.githubusercontent.com/tesseract-ocr/tessdata/master/chi_sim.traineddata</span>
+<span class="c">#将下载的中文包放到/usr/local/Cellar/tesseract/3.05.01/share/tessdata</span>
+<span class="c">#再安装pip install pytesseract</span>
+
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pytesseract</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">PIL</span><span class="o">.</span><span class="n">Image</span><span class="o">.</span><span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+<span class="n">code</span> <span class="o">=</span> <span class="n">pytesseract</span><span class="o">.</span><span class="n">image_to_string</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="s">'chi_sim'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>u__〕J 日 亡′廿〗 汁炙易雯 o
+
+其实如果能接受自己 “我收钱” 这_点，
+人就敞壳多了o 但是这最多是保镖的达
+宫。
+
+如果你要 “漂壳” ， 那就要做剑侠, 手不
+碰钱o 为此他可以矫饰_下o
+
+他要求自己做漂壳事, 但同时也要跟他的
+人也做漂壳事o
+
+对自己放低了要求， 对别人调高了期待，
+这是不开心的源头o
+
+老郭会觉得徒弟该跟他签那些条件苛刻的
+合同。 他觉得北京台_直是朋友， 才会觉
+得对方拍他家占用绿地的后院是对不起
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">结论：识别一般</span>
+</code></pre></div></div>
+
+<h4 id="tesseract直接识别">tesseract直接识别</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+
+<span class="k">def</span> <span class="nf">image_to_string</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cleanup</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">plus</span><span class="o">=</span><span class="s">''</span><span class="p">):</span>
+    <span class="c"># cleanup为True则识别完成后删除生成的文本文件</span>
+    <span class="c"># plus参数为给tesseract的附加高级参数</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="s">'tesseract '</span> <span class="o">+</span> <span class="n">img</span> <span class="o">+</span> <span class="s">' '</span> <span class="o">+</span>
+                            <span class="n">img</span> <span class="o">+</span> <span class="s">' '</span> <span class="o">+</span> <span class="n">plus</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  <span class="c"># 生成同名txt文件</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s">''</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">img</span> <span class="o">+</span> <span class="s">'.txt'</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">cleanup</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">img</span> <span class="o">+</span> <span class="s">'.txt'</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">text</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="n">image_to_string</span><span class="p">(</span><span class="n">s4</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="s">'-l chi_sim'</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>u__〕J 日 亡′廿〗 甘炙髦雯 o
+
+其实如果能接受自己 “我收钱” 这_点，
+人就敞壳多了o 但是这最多是保镖的达
+宫。
+
+如果你要 “漂壳” ， 那就要做剑侠, 手不
+碰钱o 为此他可以矫饰_下o
+
+他要求自己做漂壳事, 但同时也要跟他的
+人也做漂壳事o
+
+对自己放低了要求, 对别人调高了期待，
+这是不开心的源头o
+
+老郭会觉得徒弟该跟他签那些条件苛刻的
+合同。 他觉得北京台_直是朋友， 才会觉
+得对方拍他家占用绿地的后院是对不起
+</code></pre></div></div>
+
+</article>
+
+<!-- 互动栏 -->
+<div class="interaction-bar" style="display: flex; justify-content: center; gap: 16px; margin: 40px 0; padding: 30px 0; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); flex-wrap: wrap;">
+    <button class="interaction-btn like-btn" data-post-id="/2018/06/26/pic2pdf">
+        <span class="btn-icon">❤️</span>
+        <span class="count">51</span>
+        <span class="btn-text">点赞</span>
+    </button>
+    <button class="interaction-btn bookmark-btn" data-post-id="/2018/06/26/pic2pdf">
+        <span class="btn-icon">⭐</span>
+        <span class="btn-text">收藏</span>
+    </button>
+    <button class="interaction-btn" id="commentBtn">
+        <span class="btn-icon">💬</span>
+        <span class="btn-text">评论</span>
+    </button>
+    <button class="interaction-btn share-btn" data-url="http://0.0.0.0:4000/2018/06/26/pic2pdf/">
+        <span class="btn-icon">🔗</span>
+        <span class="btn-text">分享</span>
+    </button>
+</div>
+
+<!-- 文章导航 -->
+<nav class="post-navigation">
+    
+    <a href="http://0.0.0.0:4000/2018/05/02/for-ubuntu16.04+Anaconda3+cuda9.1+cudnn7.1.3/" class="post-nav-item prev">
+        <span class="post-nav-label">← 上一篇</span>
+        <span class="post-nav-title">安装ubuntu 16.04LTS + Anaconda3 +cuda9.1+cudnn7.1.3+tensorflow1.7+python3</span>
+    </a>
+    
+
+    
+    <a href="http://0.0.0.0:4000/2018/07/09/Rubik's-Cube/" class="post-nav-item next">
+        <span class="post-nav-label">下一篇 →</span>
+        <span class="post-nav-title">三阶魔方新手教程</span>
+    </a>
+    
+</nav>
+
+<!-- 评论区 -->
+<section class="comments-section" id="commentsSection" style="margin-top: 40px; padding-top: 40px; border-top: 1px solid var(--border-color);">
+    <h3 style="font-size: 20px; color: var(--accent-cyan); margin-bottom: 20px;">💬 评论</h3>
+    
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2018/06/26/pic2pdf/',
+            clientID: '',
+            clientSecret: '',
+            repo: '',
+            owner: '',
+            admin: [''],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+</section>
+
+<script>
+    // 评论按钮平滑滚动
+    document.addEventListener('DOMContentLoaded', function() {
+        const commentBtn = document.getElementById('commentBtn');
+        if (commentBtn) {
+            commentBtn.addEventListener('click', function() {
+                const commentsSection = document.getElementById('commentsSection');
+                if (commentsSection) {
+                    commentsSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        }
+
+        // 计算阅读时间
+        const articleContent = document.getElementById('articleContent');
+        if (articleContent) {
+            const text = articleContent.textContent || '';
+            const chineseChars = text.match(/[\u4e00-\u9fa5]/g) || [];
+            const wordCount = chineseChars.length + (text.match(/[a-zA-Z]+/g) || []).length;
+            const minutes = Math.max(1, Math.ceil(wordCount / 300));
+
+            const readingTimeEl = document.querySelector('.reading-time');
+            if (readingTimeEl) {
+                readingTimeEl.textContent = minutes;
+            }
+        }
+    });
+</script>
+
+    </div>
+
+    <!-- 右侧边栏 -->
+    <aside class="sidebar sidebar-right">
+        <!-- 作者信息 -->
+        <div class="widget author-card">
+            <div class="author-avatar">
+                H
+            </div>
+            <div class="author-name">Hu Wu</div>
+            <div class="author-bio">
+                阿虎的个人博客 - 记录技术成长之路，分享AI时代的新知与洞见
+            </div>
+            <div class="author-social">
+                <a href="https://github.com/wuhuhu800" class="social-link" target="_blank" title="GitHub">G</a>
+                <a href="mailto:gwuhuhu800@gmail.com" class="social-link" title="Email">@</a>
+                <a href="http://0.0.0.0:4000/feed.xml" class="social-link" title="RSS">R</a>
+            </div>
+        </div>
+
+        <!-- 相关文章（文章页面显示） -->
+        
+        <div class="widget">
+            <div class="widget-title">📚 相关文章</div>
+            <ul class="related-posts">
+                
+            </ul>
+        </div>
+        
+
+        <!-- 热门文章 -->
+        <div class="widget">
+            <div class="widget-title">🔥 热门文章</div>
+            <ul class="related-posts">
+                
+                <li class="related-post">
+                    <a href="http://0.0.0.0:4000/2026/03/01/AI_Agent-earn-money/">Ai_agent Earn Money</a>
+                    <div class="related-post-meta">2026年03月</div>
+                </li>
+                
+                <li class="related-post">
+                    <a href="http://0.0.0.0:4000/2018/10/27/find_copy/">对比两篇文章重复度</a>
+                    <div class="related-post-meta">2018年10月</div>
+                </li>
+                
+                <li class="related-post">
+                    <a href="http://0.0.0.0:4000/2018/10/07/taobao_pic/">淘宝商品详情页图片抓取</a>
+                    <div class="related-post-meta">2018年10月</div>
+                </li>
+                
+                <li class="related-post">
+                    <a href="http://0.0.0.0:4000/2018/07/09/Rubik's-Cube/">三阶魔方新手教程</a>
+                    <div class="related-post-meta">2018年07月</div>
+                </li>
+                
+                <li class="related-post">
+                    <a href="http://0.0.0.0:4000/2018/06/26/pic2pdf/">图片批量转pdf</a>
+                    <div class="related-post-meta">2018年06月</div>
+                </li>
+                
+            </ul>
+        </div>
+
+        <!-- GitHub活动 -->
+        <div class="widget">
+            <div class="widget-title">💻 GitHub</div>
+            <div style="text-align: center; padding: 10px;">
+                <img src="https://ghchart.rshah.org/wuhuhu800"
+                     alt="GitHub Contributions"
+                     style="width: 100%; border-radius: 8px; opacity: 0.8;"
+                     onerror="this.style.display='none'">
+            </div>
+        </div>
+    </aside>
+</main>
+
+    <!-- 悬浮功能按钮 -->
+    <div class="floating-panel">
+        <button class="feature-btn" id="settingsBtn" title="阅读设置">⚙️</button>
+        <button class="feature-btn" id="ttsToggleBtn" title="语音朗读">🔊</button>
+        <button class="feature-btn" id="shareBtn" title="分享文章">📤</button>
+    </div>
+
+    <!-- 设置面板 -->
+    <div class="settings-panel" id="settingsPanel">
+        <div class="setting-item">
+            <div class="setting-label">字体大小</div>
+            <div class="setting-options">
+                <button class="setting-btn" data-setting="fontSize" data-value="small">小</button>
+                <button class="setting-btn active" data-setting="fontSize" data-value="medium">中</button>
+                <button class="setting-btn" data-setting="fontSize" data-value="large">大</button>
+            </div>
+        </div>
+        <div class="setting-item">
+            <div class="setting-label">行宽</div>
+            <div class="setting-options">
+                <button class="setting-btn" data-setting="lineWidth" data-value="narrow">窄</button>
+                <button class="setting-btn active" data-setting="lineWidth" data-value="medium">中</button>
+                <button class="setting-btn" data-setting="lineWidth" data-value="wide">宽</button>
+            </div>
+        </div>
+        <div class="setting-item">
+            <div class="setting-label">行高</div>
+            <div class="setting-options">
+                <button class="setting-btn" data-setting="lineHeight" data-value="compact">紧凑</button>
+                <button class="setting-btn active" data-setting="lineHeight" data-value="comfortable">舒适</button>
+                <button class="setting-btn" data-setting="lineHeight" data-value="relaxed">宽松</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TTS面板 -->
+    <div class="tts-panel" id="ttsPanel">
+        <button class="tts-btn" id="ttsPrev" title="上一段">⏮</button>
+        <button class="tts-btn" id="ttsPlay" title="播放/暂停">▶</button>
+        <button class="tts-btn" id="ttsNext" title="下一段">⏭</button>
+        <div class="tts-progress">
+            <div class="tts-progress-bar" id="ttsProgressBar"></div>
+        </div>
+        <button class="tts-btn" id="ttsClose" title="关闭">✕</button>
+    </div>
+
+    <!-- AI助手 -->
+    <div class="ai-assistant" id="aiAssistant">
+        <div class="ai-tooltip">🤖 AI助手 - 点击询问文章相关问题</div>
+        <button class="ai-btn" id="aiBtn">🤖</button>
+    </div>
+
+    <!-- 返回顶部 -->
+    <button class="back-to-top" id="backToTop" title="返回顶部">↑</button>
+
+    <!-- 页脚 -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>关于</h4>
+                <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.8;">
+                    阿虎的个人博客 - 记录技术成长之路，分享AI时代的新知与洞见
+                </p>
+                <div class="author-social" style="margin-top: 15px;">
+                    <a href="https://github.com/wuhuhu800" class="social-link" target="_blank" title="GitHub">G</a>
+                    <a href="mailto:gwuhuhu800@gmail.com" class="social-link" title="Email">@</a>
+                    <a href="http://0.0.0.0:4000/feed.xml" class="social-link" title="RSS">R</a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h4>导航</h4>
+                <ul>
+                    
+                    <li><a href="http://0.0.0.0:4000/" title="首页">首页</a></li>
+                    
+                    <li><a href="http://0.0.0.0:4000/categories/" title="分类">分类</a></li>
+                    
+                    <li><a href="http://0.0.0.0:4000/wiki/" title="维基">维基</a></li>
+                    
+                    <li><a href="http://0.0.0.0:4000/links/" title="链接">链接</a></li>
+                    
+                    <li><a href="http://0.0.0.0:4000/about/" title="关于">关于</a></li>
+                    
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>统计</h4>
+                <div class="stats-grid" style="grid-template-columns: 1fr;">
+                    <div class="stat-item" style="text-align: left; display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 20px;">📝</span>
+                        <div>
+                            <div class="stat-value" style="font-size: 16px;">12</div>
+                            <div class="stat-label">篇文章</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h4>技术</h4>
+                <p style="color: var(--text-secondary); font-size: 13px; line-height: 1.8;">
+                    使用 <a href="https://jekyllrb.com" target="_blank">Jekyll</a> 构建<br>
+                    主题：赛博朋克科技风 v2.1<br>
+                    按 <strong style="color: var(--accent-cyan);">Shift+?</strong> 查看快捷键
+                </p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="footer-copyright">
+                © 2026 Hu Wu · 保留所有权利
+            </div>
+            <div style="display: flex; gap: 20px; font-size: 13px; color: var(--text-muted);">
+                <a href="#" style="color: var(--text-muted);">隐私政策</a>
+                <a href="#" style="color: var(--text-muted);">使用条款</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 赛博朋克主题脚本 -->
+    <script src="http://0.0.0.0:4000/assets/js/cyberpunk-theme.js"></script>
+
+    <!-- Mermaid初始化 -->
+    
+
+    <!-- KaTeX初始化 -->
+    
+
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111499340-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-111499340-1');
+    </script>
+    
+</body>
+</html>
+

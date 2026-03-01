@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" prefix="og: http://ogp.me/ns#">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>淘宝商品详情页图片抓取 — 问道</title>
+
+    <!-- 赛博朋克主题样式 -->
+    <link rel="stylesheet" href="http://0.0.0.0:4000/assets/css/cyberpunk-theme.css">
+
+    <!-- 字体 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    
+
+    <!-- SEO Meta Tags -->
+    <link rel="canonical" href="http://0.0.0.0:4000/2018/10/07/taobao_pic/">
+    <link rel="alternate" type="application/atom+xml" title="问道" href="http://0.0.0.0:4000/feed.xml">
+    <link rel="icon" type="image/svg+xml" href="http://0.0.0.0:4000/favicon.svg">
+    <link rel="alternate icon" href="http://0.0.0.0:4000/favicon.ico">
+
+    
+    <meta property="og:title" content="淘宝商品详情页图片抓取">
+    
+    <meta name="keywords" content="爬虫、slenium、chromedriver">
+    <meta name="og:keywords" content="爬虫、slenium、chromedriver">
+    
+    <meta name="description" content="本文主要是对淘宝详情页图片进行爬取，主要核心技术就是对淘宝反爬虫技术ajax突破，具体见代码">
+    <meta name="og:description" content="本文主要是对淘宝详情页图片进行爬取，主要核心技术就是对淘宝反爬虫技术ajax突破，具体见代码">
+    
+    
+
+    
+
+    <meta property="og:url" content="http://0.0.0.0:4000/2018/10/07/taobao_pic/">
+    <meta property="og:site_name" content="问道">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="zh_CN" />
+
+    
+    <meta property="article:published_time" content="2018-10-07">
+    
+
+    <!-- PWA -->
+    <link rel="manifest" href="http://0.0.0.0:4000/manifest.json">
+    <meta name="theme-color" content="#0d1117">
+
+    <!-- 页面特定CSS -->
+    
+
+    <!-- Mermaid -->
+    
+
+    <!-- KaTeX -->
+    
+</head>
+
+<body class="" data-mz="">
+    <!-- 网格背景 -->
+    <div class="cyber-grid"></div>
+
+    <!-- 阅读进度条 -->
+    <div class="reading-progress" id="readingProgress" style="width: 0%"></div>
+
+    <!-- 头部导航 -->
+    <header class="site-header">
+        <a href="http://0.0.0.0:4000/" class="site-logo" title="问道">
+            问道
+        </a>
+
+        <nav class="site-nav" role="navigation">
+            
+            <a href="http://0.0.0.0:4000/"
+               class=""
+               target="_self"
+               title="首页">
+                首页
+            </a>
+            
+            <a href="http://0.0.0.0:4000/categories/"
+               class=""
+               target="_self"
+               title="分类">
+                分类
+            </a>
+            
+            <a href="http://0.0.0.0:4000/wiki/"
+               class=""
+               target="_self"
+               title="维基">
+                维基
+            </a>
+            
+            <a href="http://0.0.0.0:4000/links/"
+               class=""
+               target="_self"
+               title="链接">
+                链接
+            </a>
+            
+            <a href="http://0.0.0.0:4000/about/"
+               class=""
+               target="_self"
+               title="关于">
+                关于
+            </a>
+            
+        </nav>
+
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <!-- 搜索框 -->
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" placeholder="搜索文章..." id="searchInput">
+            </div>
+
+            <!-- 主题切换 -->
+            <button class="theme-toggle" id="themeToggle" title="切换主题">🌙</button>
+
+            <!-- 移动端菜单按钮 -->
+            <button class="mobile-menu-btn" id="mobileMenuBtn" title="菜单">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+    <!-- / header -->
+
+
+<main class="main-container">
+    <!-- 左侧边栏 -->
+    <aside class="sidebar sidebar-left">
+        <!-- 数据统计 -->
+        <div class="widget">
+            <div class="widget-title">📊 数据统计</div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value">12</div>
+                    <div class="stat-label">文章</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">12.5k</div>
+                    <div class="stat-label">阅读</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">1.2k</div>
+                    <div class="stat-label">点赞</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">89</div>
+                    <div class="stat-label">评论</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 文章目录（文章页面显示） -->
+        
+        <div class="widget toc-widget">
+            <div class="widget-title">📑 文章目录</div>
+            <ul class="toc-list" id="tocList">
+                <li style="color: var(--text-muted);">加载中...</li>
+            </ul>
+        </div>
+        
+
+        <!-- 热门标签 -->
+        <div class="widget">
+            <div class="widget-title">🏷️ 热门标签</div>
+            <div class="tag-cloud">
+                <span class="tag">Python</span>
+                <span class="tag">AI</span>
+                <span class="tag">机器学习</span>
+                <span class="tag">深度学习</span>
+                <span class="tag">数据分析</span>
+                <span class="tag">OpenClaw</span>
+                <span class="tag">算法</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- 主内容区 -->
+    <div class="main-content">
+        <article class="article-header" data-id="/2018/10/07/taobao_pic">
+    <h1 class="article-title">淘宝商品详情页图片抓取</h1>
+
+    <div class="article-meta">
+        
+        <span class="meta-item">
+            <span class="meta-icon">📅</span>
+            2018年10月07日
+        </span>
+        
+        <span class="meta-item">
+            <span class="meta-icon">⏱️</span>
+            <span class="reading-time">--</span> 分钟阅读
+        </span>
+        <span class="meta-item">
+            <span class="meta-icon">👁️</span>
+            3616 阅读
+        </span>
+    </div>
+
+    
+    <div class="article-tags">
+        
+        <span class="tag">#jekyll</span>
+        
+        
+        <a href="http://0.0.0.0:4000/categories/#爬虫" class="tag tag-cat">爬虫</a>
+        
+    </div>
+    
+</article>
+
+<article class="article-content" id="articleContent">
+    <p>本文主要是对淘宝详情页图片进行爬取，主要核心技术就是对淘宝反爬虫技术ajax突破，具体见代码</p>
+
+<pre><code class="language-Python"># 导入selenium的浏览器驱动接口
+from selenium import webdriver
+# 要想调用键盘按键操作需要引入keys包
+from selenium.webdriver.common.keys import Keys
+# 导入chrome选项
+from selenium.webdriver.chrome.options import Options
+from lxml import etree
+import os,time,re,requests,shutil
+from PIL import Image
+
+
+taobao_url=input('请输入抓取地址: ')
+output_=input('请输入最后图片命名: ')
+# 创建chrome浏览器驱动，无头模式（超爽）
+chrome_options = Options()
+chrome_options.add_argument('--headless')
+driver = webdriver.Chrome(chrome_options=chrome_options)
+
+driver.get(taobao_url)#获取淘宝地址
+time.sleep(3)
+
+# 逐渐滚动浏览器窗口，令ajax逐渐加载
+for i in range(1, 20):#滚动的次数
+    js = "var q=document.body.scrollTop=" + str(500 * i)  # PhantomJS
+    js = "var q=document.documentElement.scrollTop=" + str(500 * i)  # 谷歌 和 火狐
+    driver.execute_script(js)
+    #print('=====================================')
+    time.sleep(3)
+# 拿到页面源码
+html = etree.HTML(driver.page_source)
+all_img_list = []
+img_group_list = html.xpath("//div[@id='J_DivItemDesc']//descendant::img/@src")
+
+
+#保存抓取图片
+def saveImg(savePath, imageURL, fileName):
+        """存储图片方法
+        Arguments:
+            imageURL &lt;string&gt; -- 图片的url
+            fileName &lt;string&gt; -- 用于存储的文件名
+        """
+        print('开始保存图片' + fileName)
+        with open(savePath + '/' + fileName+ '.png', 'wb') as f:
+            f.write(requests.get(imageURL).content)
+
+#调整图片，目的为了衔接自然
+def image_resize(img, w, h):
+    """调整图片大小
+    """
+    try:
+        if img.mode not in ('L', 'RGB'):
+            img = img.convert('RGB')
+        img = img.resize((w,h))
+    except Exception as e:
+        pass
+    return img
+
+#合并图片
+def image_merge(images, output_dir='output', output_name='merge.jpg'):
+    """垂直合并多张图片
+    images - 要合并的图片路径列表
+    ouput_dir - 输出路径
+    output_name - 输出文件名
+    """
+    max_width = 0
+    total_height = 0
+    # 计算合成后图片的宽度（以最宽的为准）和高度
+    for img_path in images:
+        if os.path.exists(img_path):
+            img = Image.open(img_path)
+            width, height = img.size
+            if width &gt; max_width:
+                max_width = width
+            total_height += height
+
+    # 产生一张空白图
+    new_img = Image.new('RGB', (max_width, total_height), 255)
+    # 合并
+    x = y = 0
+    for img_path in images:
+        if os.path.exists(img_path):
+            img = Image.open(img_path)
+            width, height = img.size
+            if width &lt;max_width:
+                img= image_resize(img, max_width, height)
+            new_img.paste(img, (x, y))
+            y += height
+
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+    save_path = '%s/%s' % (output_dir, output_name)
+    new_img.save(save_path)
+    return save_path
+
+
+#保存图片的位置
+img_dir_path='/Users/suncan/Desktop/天下秀/pic'
+
+if os.path.exists(img_dir_path):
+    shutil.rmtree(img_dir_path)#清除之前抓的图片
+
+if not os.path.exists(img_dir_path):
+    os.makedirs(img_dir_path)
+
+#保存抓取的每一张图片
+index=0
+for img in img_group_list:
+    imglink = img
+    if img.startswith('http') is True:
+        imglink = img
+        saveImg(img_dir_path, imglink, str(index))
+        index += 1
+
+#遍历存放图片的路径
+images=[]
+for root, dirs, files in os.walk(img_dir_path):
+    for i in files:
+        obpath=os.path.join(root,i)
+        images.append(obpath)
+
+#rm -rf '/Users/suncan/Desktop/天下秀/pic/.DS_Store'
+
+if __name__ == "__main__":
+    image_merge(images,output_name=output_+'.jpg')
+
+</code></pre>
+<p>参考：</p>
+
+<p><a href="https://blog.csdn.net/u010986776/article/details/79266448">使用slenium+chromedriver实现无敌爬虫</a></p>
+
+<p><a href="http://www.redicecn.com/html/Python/20130523/459.html">使用PIL实现多张图片垂直合并</a></p>
+
+</article>
+
+<!-- 互动栏 -->
+<div class="interaction-bar" style="display: flex; justify-content: center; gap: 16px; margin: 40px 0; padding: 30px 0; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); flex-wrap: wrap;">
+    <button class="interaction-btn like-btn" data-post-id="/2018/10/07/taobao_pic">
+        <span class="btn-icon">❤️</span>
+        <span class="count">116</span>
+        <span class="btn-text">点赞</span>
+    </button>
+    <button class="interaction-btn bookmark-btn" data-post-id="/2018/10/07/taobao_pic">
+        <span class="btn-icon">⭐</span>
+        <span class="btn-text">收藏</span>
+    </button>
+    <button class="interaction-btn" id="commentBtn">
+        <span class="btn-icon">💬</span>
+        <span class="btn-text">评论</span>
+    </button>
+    <button class="interaction-btn share-btn" data-url="http://0.0.0.0:4000/2018/10/07/taobao_pic/">
+        <span class="btn-icon">🔗</span>
+        <span class="btn-text">分享</span>
+    </button>
+</div>
+
+<!-- 文章导航 -->
+<nav class="post-navigation">
+    
+    <a href="http://0.0.0.0:4000/2018/07/09/Rubik's-Cube/" class="post-nav-item prev">
+        <span class="post-nav-label">← 上一篇</span>
+        <span class="post-nav-title">三阶魔方新手教程</span>
+    </a>
+    
+
+    
+    <a href="http://0.0.0.0:4000/2018/10/27/find_copy/" class="post-nav-item next">
+        <span class="post-nav-label">下一篇 →</span>
+        <span class="post-nav-title">对比两篇文章重复度</span>
+    </a>
+    
+</nav>
+
+<!-- 评论区 -->
+<section class="comments-section" id="commentsSection" style="margin-top: 40px; padding-top: 40px; border-top: 1px solid var(--border-color);">
+    <h3 style="font-size: 20px; color: var(--accent-cyan); margin-bottom: 20px;">💬 评论</h3>
+    
+
+  
+
+  
+        <div id="gitalk-container"></div>
+        <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+        <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+        <script>
+        var gitalk = new Gitalk({
+            id: '/2018/10/07/taobao_pic/',
+            clientID: '',
+            clientSecret: '',
+            repo: '',
+            owner: '',
+            admin: [''],
+            labels: ['gitment'],
+            perPage: 50,
+        })
+        gitalk.render('gitalk-container')
+        </script>
+  
+
+
+</section>
+
+<script>
+    // 评论按钮平滑滚动
+    document.addEventListener('DOMContentLoaded', function() {
+        const commentBtn = document.getElementById('commentBtn');
+        if (commentBtn) {
+            commentBtn.addEventListener('click', function() {
+                const commentsSection = document.getElementById('commentsSection');
+                if (commentsSection) {
+                    commentsSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        }
+
+        // 计算阅读时间
+        const articleContent = document.getElementById('articleContent');
+        if (articleContent) {
+            const text = articleContent.textContent || '';
+            const chineseChars = text.match(/[\u4e00-\u9fa5]/g) || [];
+            const wordCount = chineseChars.length + (text.match(/[a-zA-Z]+/g) || []).length;
+            const minutes = Math.max(1, Math.ceil(wordCount / 300));
+
+            const readingTimeEl = document.querySelector('.reading-time');
+            if (readingTimeEl) {
+                readingTimeEl.textContent = minutes;
+            }
+        }
+    });
+</script>
+
+    </div>
+
+    <!-- 右侧边栏 -->
+    <aside class="sidebar sidebar-right">
+        <!-- 作者信息 -->
+        <div class="widget author-card">
+            <div class="author-avatar">
+                H
+            </div>
+            <div class="author-name">Hu Wu</div>
+            <div class="author-bio">
+                阿虎的个人博客 - 记录技术成长之路，分享AI时代的新知与洞见
+            </div>
+            <div class="author-social">
+                <a href="https://github.com/wuhuhu800" class="social-link" target="_blank" title="GitHub">G</a>
+                <a href="mailto:gwuhuhu800@gmail.com" class="social-link" title="Email">@</a>
+                <a href="http://0.0.0.0:4000/feed.xml" class="social-link" title="RSS">R</a>
+            </div>
+        </div>
+
+        <!-- 相关文章（文章页面显示） -->
+        
+        <div class="widget">
+            <div class="widget-title">📚 相关文章</div>
+            <ul class="related-posts">
+                
+            </ul>
+        </div>
+        
+
+        <!-- 热门文章 -->
+        <div class="widget">
+            <div class="widget-title">🔥 热门文章</div>
+            <ul class="related-posts">
+                
+                <li class="related-post">
+                    <a href="http://0.0.0.0:4000/2026/03/01/AI_Agent-earn-money/">Ai_agent Earn Money</a>
+                    <div class="related-post-meta">2026年03月</div>
+                </li>
+                
+                <li class="related-post">
+                    <a href="http://0.0.0.0:4000/2018/10/27/find_copy/">对比两篇文章重复度</a>
+                    <div class="related-post-meta">2018年10月</div>
+                </li>
+                
+                <li class="related-post">
+                    <a href="http://0.0.0.0:4000/2018/10/07/taobao_pic/">淘宝商品详情页图片抓取</a>
+                    <div class="related-post-meta">2018年10月</div>
+                </li>
+                
+                <li class="related-post">
+                    <a href="http://0.0.0.0:4000/2018/07/09/Rubik's-Cube/">三阶魔方新手教程</a>
+                    <div class="related-post-meta">2018年07月</div>
+                </li>
+                
+                <li class="related-post">
+                    <a href="http://0.0.0.0:4000/2018/06/26/pic2pdf/">图片批量转pdf</a>
+                    <div class="related-post-meta">2018年06月</div>
+                </li>
+                
+            </ul>
+        </div>
+
+        <!-- GitHub活动 -->
+        <div class="widget">
+            <div class="widget-title">💻 GitHub</div>
+            <div style="text-align: center; padding: 10px;">
+                <img src="https://ghchart.rshah.org/wuhuhu800"
+                     alt="GitHub Contributions"
+                     style="width: 100%; border-radius: 8px; opacity: 0.8;"
+                     onerror="this.style.display='none'">
+            </div>
+        </div>
+    </aside>
+</main>
+
+    <!-- 悬浮功能按钮 -->
+    <div class="floating-panel">
+        <button class="feature-btn" id="settingsBtn" title="阅读设置">⚙️</button>
+        <button class="feature-btn" id="ttsToggleBtn" title="语音朗读">🔊</button>
+        <button class="feature-btn" id="shareBtn" title="分享文章">📤</button>
+    </div>
+
+    <!-- 设置面板 -->
+    <div class="settings-panel" id="settingsPanel">
+        <div class="setting-item">
+            <div class="setting-label">字体大小</div>
+            <div class="setting-options">
+                <button class="setting-btn" data-setting="fontSize" data-value="small">小</button>
+                <button class="setting-btn active" data-setting="fontSize" data-value="medium">中</button>
+                <button class="setting-btn" data-setting="fontSize" data-value="large">大</button>
+            </div>
+        </div>
+        <div class="setting-item">
+            <div class="setting-label">行宽</div>
+            <div class="setting-options">
+                <button class="setting-btn" data-setting="lineWidth" data-value="narrow">窄</button>
+                <button class="setting-btn active" data-setting="lineWidth" data-value="medium">中</button>
+                <button class="setting-btn" data-setting="lineWidth" data-value="wide">宽</button>
+            </div>
+        </div>
+        <div class="setting-item">
+            <div class="setting-label">行高</div>
+            <div class="setting-options">
+                <button class="setting-btn" data-setting="lineHeight" data-value="compact">紧凑</button>
+                <button class="setting-btn active" data-setting="lineHeight" data-value="comfortable">舒适</button>
+                <button class="setting-btn" data-setting="lineHeight" data-value="relaxed">宽松</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TTS面板 -->
+    <div class="tts-panel" id="ttsPanel">
+        <button class="tts-btn" id="ttsPrev" title="上一段">⏮</button>
+        <button class="tts-btn" id="ttsPlay" title="播放/暂停">▶</button>
+        <button class="tts-btn" id="ttsNext" title="下一段">⏭</button>
+        <div class="tts-progress">
+            <div class="tts-progress-bar" id="ttsProgressBar"></div>
+        </div>
+        <button class="tts-btn" id="ttsClose" title="关闭">✕</button>
+    </div>
+
+    <!-- AI助手 -->
+    <div class="ai-assistant" id="aiAssistant">
+        <div class="ai-tooltip">🤖 AI助手 - 点击询问文章相关问题</div>
+        <button class="ai-btn" id="aiBtn">🤖</button>
+    </div>
+
+    <!-- 返回顶部 -->
+    <button class="back-to-top" id="backToTop" title="返回顶部">↑</button>
+
+    <!-- 页脚 -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>关于</h4>
+                <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.8;">
+                    阿虎的个人博客 - 记录技术成长之路，分享AI时代的新知与洞见
+                </p>
+                <div class="author-social" style="margin-top: 15px;">
+                    <a href="https://github.com/wuhuhu800" class="social-link" target="_blank" title="GitHub">G</a>
+                    <a href="mailto:gwuhuhu800@gmail.com" class="social-link" title="Email">@</a>
+                    <a href="http://0.0.0.0:4000/feed.xml" class="social-link" title="RSS">R</a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h4>导航</h4>
+                <ul>
+                    
+                    <li><a href="http://0.0.0.0:4000/" title="首页">首页</a></li>
+                    
+                    <li><a href="http://0.0.0.0:4000/categories/" title="分类">分类</a></li>
+                    
+                    <li><a href="http://0.0.0.0:4000/wiki/" title="维基">维基</a></li>
+                    
+                    <li><a href="http://0.0.0.0:4000/links/" title="链接">链接</a></li>
+                    
+                    <li><a href="http://0.0.0.0:4000/about/" title="关于">关于</a></li>
+                    
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>统计</h4>
+                <div class="stats-grid" style="grid-template-columns: 1fr;">
+                    <div class="stat-item" style="text-align: left; display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 20px;">📝</span>
+                        <div>
+                            <div class="stat-value" style="font-size: 16px;">12</div>
+                            <div class="stat-label">篇文章</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h4>技术</h4>
+                <p style="color: var(--text-secondary); font-size: 13px; line-height: 1.8;">
+                    使用 <a href="https://jekyllrb.com" target="_blank">Jekyll</a> 构建<br>
+                    主题：赛博朋克科技风 v2.1<br>
+                    按 <strong style="color: var(--accent-cyan);">Shift+?</strong> 查看快捷键
+                </p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="footer-copyright">
+                © 2026 Hu Wu · 保留所有权利
+            </div>
+            <div style="display: flex; gap: 20px; font-size: 13px; color: var(--text-muted);">
+                <a href="#" style="color: var(--text-muted);">隐私政策</a>
+                <a href="#" style="color: var(--text-muted);">使用条款</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 赛博朋克主题脚本 -->
+    <script src="http://0.0.0.0:4000/assets/js/cyberpunk-theme.js"></script>
+
+    <!-- Mermaid初始化 -->
+    
+
+    <!-- KaTeX初始化 -->
+    
+
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111499340-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-111499340-1');
+    </script>
+    
+</body>
+</html>
+

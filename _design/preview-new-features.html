@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>赛博朋克博客主题 v2.1 - 新功能预览</title>
+    <link rel="stylesheet" href="../assets/css/cyberpunk-theme.css">
+    <style>
+        .feature-demo {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 30px;
+            margin: 30px 0;
+        }
+        .feature-title {
+            color: var(--accent-cyan);
+            font-size: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .feature-desc {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+        .demo-area {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-sm);
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="cyber-grid"></div>
+    <div class="reading-progress" id="readingProgress" style="width: 0%"></div>
+
+    <header class="site-header">
+        <a href="#" class="site-logo">新功能预览</a>
+        <nav class="site-nav">
+            <a href="#" class="active">首页</a>
+            <a href="#">文章</a>
+            <a href="#">关于</a>
+        </nav>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" placeholder="搜索文章..." id="searchInput">
+            </div>
+            <button class="theme-toggle" id="themeToggle">🌙</button>
+        </div>
+    </header>
+
+    <main class="main-container" style="grid-template-columns: 1fr;">
+        <div class="main-content">
+            <div class="banner" style="padding: 60px 20px;">
+                <h1 class="banner-title">赛博朋克博客主题 v2.1</h1>
+                <p class="banner-desc">新增功能一览，按 Shift+? 查看快捷键</p>
+            </div>
+
+            <!-- 功能1: 代码块复制 -->
+            <div class="feature-demo">
+                <h2 class="feature-title">📋 功能1: 代码块一键复制</h2>
+                <p class="feature-desc">每个代码块右上角自动显示"复制"按钮，点击后变为"已复制"状态，2秒后自动恢复。</p>
+                <div class="demo-area">
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-lang">JavaScript</span>
+                            <div class="code-actions">
+                                <button class="code-copy-btn">📋 复制</button>
+                            </div>
+                        </div>
+                        <div class="code-content">
+                            <pre><code>function hello() {
+    console.log('Hello, Cyberpunk!');
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 功能2: 图片灯箱 -->
+            <div class="feature-demo">
+                <h2 class="feature-title">🔍 功能2: 图片灯箱效果</h2>
+                <p class="feature-desc">点击文章内的图片可以放大查看，支持 ESC 键关闭。图片带有 zoom-in 光标提示。</p>
+                <div class="demo-area">
+                    <p style="color: var(--text-secondary);">点击图片试试（示例图片）:</p>
+                    <img src="https://via.placeholder.com/400x200/161b22/00f5ff?text=Click+to+Zoom"
+                         alt="示例图片"
+                         style="cursor: zoom-in; border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+                </div>
+            </div>
+
+            <!-- 功能3: 上一篇/下一篇导航 -->
+            <div class="feature-demo">
+                <h2 class="feature-title">⬅️ ➡️ 功能3: 文章导航</h2>
+                <p class="feature-desc">文章底部显示上一篇和下一篇导航，快速切换相关文章。</p>
+                <div class="demo-area">
+                    <nav class="post-navigation" style="margin: 0;">
+                        <a href="#" class="post-nav-item prev">
+                            <span class="post-nav-label">← 上一篇</span>
+                            <span class="post-nav-title">Python数据分析入门指南</span>
+                        </a>
+                        <a href="#" class="post-nav-item next">
+                            <span class="post-nav-label">下一篇 →</span>
+                            <span class="post-nav-title">深度学习模型优化技巧总结</span>
+                        </a>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- 功能4: 统计面板 -->
+            <div class="feature-demo">
+                <h2 class="feature-title">📊 功能4: 实时字数统计</h2>
+                <p class="feature-desc">文章页面左下角悬浮显示字数、代码行数、预计阅读时间。</p>
+                <div class="demo-area" style="position: relative; height: 100px;">
+                    <div class="stats-panel" style="position: absolute; left: 20px; bottom: 20px;">
+                        <div class="stat-info">
+                            <span>📝</span>
+                            <span>字数: <span class="value">2,458</span></span>
+                        </div>
+                        <div class="stat-info">
+                            <span>📖</span>
+                            <span>代码: <span class="value">42</span></span>
+                        </div>
+                        <div class="stat-info">
+                            <span>⏱️</span>
+                            <span>预计: <span class="value">8</span>分钟</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 功能5: 快捷键帮助 -->
+            <div class="feature-demo">
+                <h2 class="feature-title">⌨️ 功能5: 键盘快捷键</h2>
+                <p class="feature-desc">支持多种快捷键操作，按 Shift+? 显示帮助面板。</p>
+                <div class="demo-area">
+                    <div class="shortcuts-list" style="max-width: 400px;">
+                        <div class="shortcut-item">
+                            <span class="shortcut-desc">聚焦搜索</span>
+                            <div class="shortcut-key"><span>/</span></div>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-desc">返回顶部</span>
+                            <div class="shortcut-key"><span>G</span><span>G</span></div>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-desc">滚动到底部</span>
+                            <div class="shortcut-key"><span>Shift</span><span>G</span></div>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-desc">关闭弹窗</span>
+                            <div class="shortcut-key"><span>Esc</span></div>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-desc">显示快捷键帮助</span>
+                            <div class="shortcut-key"><span>Shift</span><span>?</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 功能6: 阅读完成庆祝 -->
+            <div class="feature-demo">
+                <h2 class="feature-title">🎉 功能6: 阅读完成庆祝</h2>
+                <p class="feature-desc">当滚动到文章95%位置时，会触发彩带动画和"阅读完成"提示。</p>
+                <div class="demo-area" style="text-align: center; padding: 40px;">
+                    <button onclick="celebrate()" class="btn btn-primary">点击模拟阅读完成效果</button>
+                </div>
+            </div>
+
+            <!-- 功能7: 图片懒加载 -->
+            <div class="feature-demo">
+                <h2 class="feature-title">🖼️ 功能7: 图片懒加载</h2>
+                <p class="feature-desc">页面外的图片使用懒加载，提升页面性能。图片加载前显示 shimmer 动画占位。</p>
+                <div class="demo-area">
+                    <div class="img-placeholder" style="width: 200px; height: 150px;"></div>
+                    <p style="color: var(--text-muted); font-size: 12px; margin-top: 10px;">懒加载占位效果</p>
+                </div>
+            </div>
+
+            <!-- 所有功能总结 -->
+            <div class="feature-demo" style="margin-top: 40px;">
+                <h2 class="feature-title">✨ 完整功能列表</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; color: var(--text-secondary);">
+                    <div>
+                        <h4 style="color: var(--accent-cyan); margin-bottom: 10px;">界面功能</h4>
+                        <ul style="list-style: none; line-height: 2;">
+                            <li>✅ 赛博朋克科技风主题</li>
+                            <li>✅ 暗黑/明亮模式切换</li>
+                            <li>✅ 阅读进度条</li>
+                            <li>✅ 返回顶部按钮</li>
+                            <li>✅ 搜索功能</li>
+                            <li>✅ 文章目录自动生成</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--accent-cyan); margin-bottom: 10px;">互动功能</h4>
+                        <ul style="list-style: none; line-height: 2;">
+                            <li>✅ 点赞/收藏/分享</li>
+                            <li>✅ 设置面板（字体/行宽）</li>
+                            <li>✅ 语音朗读 (TTS)</li>
+                            <li>✅ 代码块复制</li>
+                            <li>✅ 图片灯箱</li>
+                            <li>✅ 阅读完成庆祝</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--accent-cyan); margin-bottom: 10px;">增强功能</h4>
+                        <ul style="list-style: none; line-height: 2;">
+                            <li>✅ 文章字数统计</li>
+                            <li>✅ 键盘快捷键</li>
+                            <li>✅ 图片懒加载</li>
+                            <li>✅ 上一篇/下一篇</li>
+                            <li>✅ 响应式布局</li>
+                            <li>✅ 打印样式优化</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 悬浮按钮 -->
+    <div class="floating-panel">
+        <button class="feature-btn" id="settingsBtn" title="阅读设置">⚙️</button>
+        <button class="feature-btn" id="ttsToggleBtn" title="语音朗读">🔊</button>
+        <button class="feature-btn" id="shareBtn" title="分享">📤</button>
+    </div>
+
+    <button class="back-to-top" id="backToTop">↑</button>
+    <button class="shortcuts-btn" onclick="showShortcuts()">?</button>
+
+    <div class="ai-assistant">
+        <div class="ai-tooltip">🤖 AI助手</div>
+        <button class="ai-btn">🤖</button>
+    </div>
+
+    <!-- 快捷键帮助弹窗 -->
+    <div class="shortcuts-overlay" id="shortcutsOverlay" onclick="hideShortcuts()"></div>
+    <div class="shortcuts-help" id="shortcutsHelp">
+        <button class="shortcuts-close" onclick="hideShortcuts()">✕</button>
+        <h3>⌨️ 键盘快捷键</h3>
+        <div class="shortcuts-list">
+            <div class="shortcut-item">
+                <span class="shortcut-desc">聚焦搜索</span>
+                <div class="shortcut-key"><span>/</span></div>
+            </div>
+            <div class="shortcut-item">
+                <span class="shortcut-desc">返回顶部</span>
+                <div class="shortcut-key"><span>G</span><span>G</span></div>
+            </div>
+            <div class="shortcut-item">
+                <span class="shortcut-desc">滚动到底部</span>
+                <div class="shortcut-key"><span>Shift</span><span>G</span></div>
+            </div>
+            <div class="shortcut-item">
+                <span class="shortcut-desc">关闭弹窗</span>
+                <div class="shortcut-key"><span>Esc</span></div>
+            </div>
+            <div class="shortcut-item">
+                <span class="shortcut-desc">显示快捷键帮助</span>
+                <div class="shortcut-key"><span>Shift</span><span>?</span></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="footer-content" style="text-align: center;">
+            <p style="color: var(--text-muted);">
+                赛博朋克科技风博客主题 v2.1 | 按 <strong style="color: var(--accent-cyan);">Shift+?</strong> 查看快捷键
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // 庆祝动画
+        function celebrate() {
+            const colors = ['#00f5ff', '#bf00ff', '#00ff88', '#ff8800', '#ff0055', '#ffee00'];
+
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.cssText = `
+                    position: fixed;
+                    width: 10px;
+                    height: 10px;
+                    background: ${colors[Math.floor(Math.random() * colors.length)]};
+                    left: ${Math.random() * 100}%;
+                    top: -10px;
+                    z-index: 20001;
+                    animation: confetti-fall ${2 + Math.random() * 2}s ease-out forwards;
+                `;
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 4000);
+            }
+
+            const toast = document.createElement('div');
+            toast.className = 'reading-complete-toast';
+            toast.innerHTML = `
+                <div class="icon">🎉</div>
+                <div class="text">阅读完成！</div>
+            `;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // 添加快捷键动画样式
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes confetti-fall {
+                0% { opacity: 1; transform: translateY(0) rotate(0deg); }
+                100% { opacity: 0; transform: translateY(100vh) rotate(720deg); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // 快捷键帮助
+        function showShortcuts() {
+            document.getElementById('shortcutsHelp').classList.add('visible');
+            document.getElementById('shortcutsOverlay').classList.add('visible');
+        }
+
+        function hideShortcuts() {
+            document.getElementById('shortcutsHelp').classList.remove('visible');
+            document.getElementById('shortcutsOverlay').classList.remove('visible');
+        }
+
+        // 键盘事件
+        document.addEventListener('keydown', (e) => {
+            if (e.target.matches('input, textarea')) return;
+
+            if (e.shiftKey && e.key === '?') {
+                e.preventDefault();
+                showShortcuts();
+            }
+            if (e.key === 'Escape') {
+                hideShortcuts();
+            }
+        });
+
+        // 复制按钮演示
+        document.querySelector('.code-copy-btn').addEventListener('click', function() {
+            this.textContent = '✅ 已复制';
+            this.classList.add('copied');
+            setTimeout(() => {
+                this.textContent = '📋 复制';
+                this.classList.remove('copied');
+            }, 2000);
+        });
+
+        // 返回顶部
+        document.getElementById('backToTop').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // 显示/隐藏返回顶部按钮
+        window.addEventListener('scroll', () => {
+            const btn = document.getElementById('backToTop');
+            if (window.scrollY > 300) {
+                btn.classList.add('visible');
+            } else {
+                btn.classList.remove('visible');
+            }
+        });
+
+        console.log('🎮 Cyberpunk Theme v2.1 Preview Loaded');
+        console.log('⌨️ Press Shift+? for shortcuts');
+    </script>
+</body>
+</html>

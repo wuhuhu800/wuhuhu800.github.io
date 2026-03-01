@@ -1,0 +1,111 @@
+[
+  
+    {
+      "title"    : "Ai_agent Earn Money",
+      "category" : null,
+      "tags"     : [],
+      "url"      : "/2026/03/01/AI_Agent-earn-money/",
+      "date"     : "2026-03-01 00:00:00 +0800",
+      "content"  : "2026年AI Agent赚钱商机完整指南使用OpenClaw、Claude Code等工具实操赚钱方法报告日期：2026年2月28日适用对象：想要利用AI Agent技术创造收入的个人和团队阅读时间：约30分钟实操难度：从入门到高级全覆盖📋 目录 2026年AI Agent商业机会概览 中国市场AI Agent赚钱实战 全球AI Agent赚钱案例 使用OpenClaw/EasyClaw的赚钱方法 Claude Code赚钱实操指南 Agent即服务(AaaS)商业模式 实操工具和资源清单 风险提示与注意事项一、2026年AI Agent商业机会概览1.1 为什么选择AI Agent作为2026年的创业方向？🔥 市场数据支撑 指标 2025年数据 2026年预测 增长率 全球AI Agent市场规模 $54亿美元 $120亿美元 122% 中国AI Agent用户规模 2.5亿人 4.2亿人 68% 企业AI Agent采用率 35% 58% 66% AI Agent开发者数量 85万人 180万人 112% 💡 核心机会点（1）技术成熟度爆发 Claude Sonnet 4.6/4.5、GPT-5.2等模型已具备强大的代码生成和自动化能力..."
+    } ,
+  
+    {
+      "title"    : "对比两篇文章重复度",
+      "category" : null,
+      "tags"     : ["jekyll"],
+      "url"      : "/2018/10/27/find_copy/",
+      "date"     : "2018-10-27 00:00:00 +0800",
+      "content"  : "本文主要是通过用GUI方式对比两篇文章的重复度，有两种方式：1、微信的链接；2、直接copy文字进行；2、并且通过生成exe文件，发布出去1、对比两篇文章的程序先放图，设计比较粗糙，大家见谅哈：from tkinter import *import refrom tkinter import scrolledtextfrom bs4 import BeautifulSoupfrom urllib.request import urlopentop=Tk()top.wm_title(\"菜单\")top.geometry(\"400x400+300+100\")#top.configure(background='green')#背景绿色# 创建一个菜单项，类似于导航栏menubar=Menu(top)# 创建菜单项fmenu1=Menu(top)for item in ['新建','打开','保存','另存为']: # 如果该菜单时顶层菜单的一个菜单项，则它添加的是下拉菜单的菜单项。 fmenu1.add_command(label=item)# add_cascade 的一个很重要的属性就是 menu 属性，它指明了要把那个菜单级联到该菜单项上，# 当然，还必不可少的就是 label 属性，用于指定该菜单项的名称menubar.add_cascade(label=\"文件\",menu=fmenu1)# 最后可以用窗口的 menu 属性指定我们使用哪一个作为它的顶层菜单top['menu']=menubar#创建部件label1 = Label(top, text='原文章:' )label1.grid(row=3, column=0)entryname1 = scrolledtext.ScrolledText(top, width=80,height=10,background='LightGreen')entryname1.grid(row=3, column=1)#找颜色 https://blog.csdn.net/chl0000/article/details/7657887label2 = Label(top, text='待验文章:' )label2.grid(row=4, column=0)# 输入框 (Entry)entryname2 =..."
+    } ,
+  
+    {
+      "title"    : "淘宝商品详情页图片抓取",
+      "category" : null,
+      "tags"     : ["jekyll"],
+      "url"      : "/2018/10/07/taobao_pic/",
+      "date"     : "2018-10-07 00:00:00 +0800",
+      "content"  : "本文主要是对淘宝详情页图片进行爬取，主要核心技术就是对淘宝反爬虫技术ajax突破，具体见代码# 导入selenium的浏览器驱动接口from selenium import webdriver# 要想调用键盘按键操作需要引入keys包from selenium.webdriver.common.keys import Keys# 导入chrome选项from selenium.webdriver.chrome.options import Optionsfrom lxml import etreeimport os,time,re,requests,shutilfrom PIL import Imagetaobao_url=input('请输入抓取地址: ')output_=input('请输入最后图片命名: ')# 创建chrome浏览器驱动，无头模式（超爽）chrome_options = Options()chrome_options.add_argument('--headless')driver = webdriver.Chrome(chrome_options=chrome_options)driver.get(taobao_url)#获取淘宝地址time.sleep(3)# 逐渐滚动浏览器窗口，令ajax逐渐加载for i in range(1, 20):#滚动的次数 js = \"var q=document.body.scrollTop=\" + str(500 * i) # PhantomJS js = \"var q=document.documentElement.scrollTop=\" + str(500 * i)..."
+    } ,
+  
+    {
+      "title"    : "三阶魔方新手教程",
+      "category" : null,
+      "tags"     : ["jekyll"],
+      "url"      : "/2018/07/09/Rubik's-Cube/",
+      "date"     : "2018-07-09 00:00:00 +0800",
+      "content"  : "三阶魔方新手教程  参考内容：我知道你想玩魔方    第一步：将魔法拼底部白色十字架：    要求：魔方底面的十字架的外部四个白色面的相邻面必须和魔方侧面的中心点颜色一致，这个比较简单，自己调一下如下图    第二步：补全底部白色面    做完十字架白色面之后，底面最多还有四块非白色面，接下来目标就是补齐。补齐的方法：    1、魔方底面任意找一块非白色面M，观察M旁边的两个白色块对应相邻面的颜色，确认要补充的色块的颜色。    例如：底面黄色块M两边的白色块的对应的相邻面的颜色分别上红色和蓝色，如下图（为了方便看，将底面调过来），那么这个角需要补充的方块是一个同时有白色、蓝色、红色的方块。    2、确认好需要补充的颜色之后，就在魔方的顶层找到对应的方块N，将N调整到和M的正上方对齐（有时候第一次顶层没有找到N，可以在底层重新选一个位置，重新确定M，再找N）。    例如：将顶部同时有白色、蓝色、红色的方块N，调整到和M对齐，见下图注意看M和N的相对位置，下图有问题需要换  3、将N和M之间的那一列方块，面对你，并且在你的最右边。4、旋转4-1、开始转动：N和M之间对应的魔方右面向上转动90°（顺时针），之后顶面顺时针转90°，最后右面向下转回90°（逆时针），如下图：4-2、发现N的三个面的位置不对，此时还是十字架的底面朝下，N方块对面对你，且在你的最右边如下图：4-3、此时仍然重复步骤4-1，即：右面向上转动90°（顺时针），之后顶面顺时针转90°，最后右面向下转回90°（逆时针）4-4、在顶面找到方块N，旋转顶层，将N的位置调整到步骤3时候的位置，4-5、重复步骤4-1、4-2、4-3，4-4，直到最后N处于魔方的底面，且N的三个面和相邻的面颜色一样为准。5、将底面剩余的三个非白色块的角部，都和M一样的处理方式，处理完成之后，底面全是白色，第一层四个面每个面也全部是相同颜色。第三步：第二层处理公式引入：  为什么要引入公式：公式为了叙述方便和简练，而且也不说是公式，其实就是操作步骤简化说明。  公式符号介绍          只有字母是顺时针90°      字母头上有一撇，是逆时针90°      字母旁边有2代表，顺时针180°      其中F：face正面，B：back背面，U：up上面，D：down下面，L:left左面，R：右面例如：F：正面顺时针旋转90°，F‘：正面逆时针旋转90°，F2：正面顺时针旋转180°第二层处理：第二层的原理就是：在不动底面和第一层的基础上，只进行第二层和第三层的某几个方块的位置对调，达到调整第二层的方块目的方式：通过对调魔方四个侧面的中心方块的正上方的方块和中心方块的左右相邻两个方块的位置，达到目的。具体如下图，旋转顶层，使得顶层的侧面的某个面的中间方块的颜色和第二层的中间方块的颜色一样，然后按照左右对调的公式进行。举例一：如果我想将中心面是蓝色面T的上方块TU和T的右边块TR互换位置，且换完之后TU的蓝色面T的蓝色面相邻，TU的红色面和侧面红色中心块相邻，这样蓝色面T正面对你开始，按照上&lt;-&gt;右的公式URU’R’U’F’UF,调整，如下图：举例二需要对调上&lt;-&gt;左位置，需要根据公式，首先要把左侧的面正对你，然后再按照公式U’F’UFURU’R’依次调整，最终第二层全部调整完成顶层十字架以及顶层黄色面完成了第二层之后，开始处理顶层。和底层的思路一样，先把顶层搞个黄色十字架，然后顶层全部黄色面公式如下图，注意图中黑色点是代表黄色块公式的意思如果你的顶层是只有一个黄色块（即使有其他黄色块，也构不成图中任何图案），那么公式FRUR’U’F’每用一遍，形状就会往后变一次，知道用完3遍公式，达到黄色十字架为止。注意，顶面黄色块的图案一定要按照公式方向摆好。错误摆放：正确摆放：如果直接就是十字架了，可以跳过这步。例子，用完公式 之后的结果：之后再按照公式以及对应的图，调整图片公式分别是：R’U2RUR’UR/RU2R’U’RU’R’我的结果，可能和你们不太一样上图状态下再用一遍公式(注意你的图案方向）：R’U2RUR’UR/RU2R’U’RU’R’此时顶层已经全部是黄色再用公式，如下图，翻转完之后，其实就是白色的底面，面朝你如果此时你图片出现这种可以直接按照原理，上翻转90°到白色面，然后RD’RU2R’DRU2R2如果你此时出的图片没有，两个角相同的，也按照原理，上翻转90°到白色面，然后RD’RU2R’DRU2R2，就可以出现两角相同的情况，然后再上翻转90°到白色面，然后RD’RU2R’DRU2R2收工最后出现两种情况：一种情况-三缺一：出现一个侧面完整，其他三个侧面都都缺一个就完整，但是单纯转动上层，无法达到目的。如图：此种情况解决方案：将成功面(全部同色)的对面（也叫工作面）朝向你，黄色面朝上，白色面朝下。使用公式：F2U’R’LF’2RL’即可完成（注意F2U’R’LF’2R完成之后可以再观察一下，适度微调即可）另一种情况-十字对称：顶层四个侧面的中间方块的位置，互相反着，出现十字相互需要调换的情况，此时在魔方四个侧面任意一个面用公式RU’RURURU’R’U’R2,完成一个面，再换下一个面，继续用此公式直到最后完成。"
+    } ,
+  
+    {
+      "title"    : "图片批量转pdf",
+      "category" : null,
+      "tags"     : ["jekyll"],
+      "url"      : "/2018/06/26/pic2pdf/",
+      "date"     : "2018-06-26 00:00:00 +0800",
+      "content"  : "意外原因，获得了一份网络上流通传逻辑思维《关系攻略》的截图版本，全部是图片，极不方便阅读，所以打算把截图转为PDF格式，以下就是本次的的方法参考 python长图片切割并转换为pdfimport osimport re#from PIL import Imagefrom tqdm import tqdm from reportlab.pdfgen import canvasfrom reportlab.lib.units import inch, cmfrom reportlab.lib.pagesizes import letterfrom reportlab.platypus import SimpleDocTemplate, Paragraph, Image, PageBreakfrom reportlab.lib.pagesizes import A4,A3,A2,A1, legal, landscapefrom reportlab.lib.utils import ImageReaderimport PIL.ExifTagsfrom os import listdirimport timefrom reportlab.lib.units import inchimport PIL.Image#解决报错OSError: image file is truncated (9 bytes..."
+    } ,
+  
+    {
+      "title"    : "安装ubuntu 16.04LTS + Anaconda3 +cuda9.1+cudnn7.1.3+tensorflow1.7+python3",
+      "category" : null,
+      "tags"     : ["jekyll"],
+      "url"      : "/2018/05/02/for-ubuntu16.04+Anaconda3+cuda9.1+cudnn7.1.3/",
+      "date"     : "2018-05-02 00:00:00 +0800",
+      "content"  : "主要参考文章How to install Tensorflow GPU with CUDA Toolkit 9.1 and cuDNN 7.1.2 for Python 3 on Ubuntu 16.04-64bit经过近30小时探索，终于把深度学习环境tensorflow gpu版本 安装成功。最难搞定就是编译过程，就是14步，又耗时又不好找问题。找了各种文章，很多都无法成功。上面分享的是比较靠谱的文章，只不过没有安装jupyter，我在此基础上加入了安装jupyter：1、配置goolge 服务器的ubuntu 16.04，可以自行配置，之后进入terminal2、升级sudo apt-get updatesudo apt-get upgrade3、安装 Anaconda3https://www.howtoing.com/how-to-install-the-anaconda-python-distribution-on-ubuntu-16-04curl -O https://repo.continuum.io/archive/Anaconda3-5.1.0-Linux-x86_64.sh我们现在可以通过SHA-256校验和通过加密散列验证来验证安装程序的数据完整性。我们将使用sha256sum命令以及脚本的文件名：sha256sum Anaconda3-5.1.0-Linux-x86_64.shbash Anaconda3-5.1.0-Linux-x86_64.sh一路yesPrepending PATH=/home/sammy/anaconda3/bin to PATH in /home/sammy/.bashrcA backup will be made to: /home/sammy/.bashrc-anaconda3.baksource ~/.bashrc一旦你这样做，你可以验证你的安装通过使用conda命令，例如与list ：conda list4、 Verify You Have a CUDA-Capable..."
+    } ,
+  
+    {
+      "title"    : "learning from data 2nd lession notes",
+      "category" : null,
+      "tags"     : ["jekyll"],
+      "url"      : "/2018/03/28/learning-from-data-02/",
+      "date"     : "2018-03-28 00:00:00 +0800",
+      "content"  : "Is learning feasible12:22样本概率v是 全体概率μ 吗，很显然不是19：20epison 代表容忍度25：481、该公式N和epsion是有效值2、公式的右边不依赖与μ3、如果要epsion越小，N就得越大4、v可以推出μ，但是v是由μ决定的29：49类比机器学习，x是bin里的marbles，如果假设h和真实f关系，通过对于h(x)和y进行比对，如果h(x)=f(x)，那么bin标记为green，如果不等，bin标记为red。现在问题是μ和f都是unkown的。53：2055：06E_in(g)：选定g模型（最终模型）之后，样本的发生概率E_out(g): 选定g模型（最终模型）之后，全体的发生概率** **"
+    } ,
+  
+    {
+      "title"    : "learning from data 1st lession notes",
+      "category" : null,
+      "tags"     : ["jekyll"],
+      "url"      : "/2018/03/24/learning-from-data-01/",
+      "date"     : "2018-03-24 00:00:00 +0800",
+      "content"  : "The essence of machine learning  A pattern exists  We cannot pin it down mathematically  We have data on it建模，现有的问题，存在一个从x到y的函数f，我们通过历史数据(x1,y1)…(xn,yn)找出一个函数g，使得g越来越像f梳理一下机器学习的流程图：1、目标是从x到y ，找到函数    2、有一组训练数据(x1,y1)…(xn,yn)     3、通过算法找到g，使得g逼近f    这里重点是存在一组假设H(这个应该就是超参数？？？)，找到最贴近的假设，例如可能是linear model，可能是 support vector machine等等这些假设。 但是这组假设是没有downside的，因为你可以穷尽所有的可能去找Hypothesis但是有一个upside，这个upside可以告诉我们怎么改进，什么是正确的方向solution的解决部分1、The Hypothesis Set  这是由我们可感知(percetron)的模型，例如神经模型、SVM…  H是超参数集  h是其中一个可能的参数 g是最终集 2、The learning Algorithm  这是由我们我们可感知(percetron)的算法，例如反向传播算法、一元二次方程… 1和2分构成learning model有三种机器学习方式1、supervised learning有输入，正确的输出(起到label或者flag的作用)2、Unsupervised learning有输入，但没有明确的输出3、Reinforcement learning有输入，还有一定的输出(起到辅助作用)"
+    } ,
+  
+    {
+      "title"    : "天池比赛之盐城汽车销量预测比赛经验随想",
+      "category" : null,
+      "tags"     : ["jekyll"],
+      "url"      : "/2018/03/17/Tianchi_competiton_impressive_points/",
+      "date"     : "2018-03-17 00:00:00 +0800",
+      "content"  : "比赛介绍印象盐城·数创未来大数据竞赛 - 乘用车零售量预测比赛结果：复赛A榜第1，B榜11。经验1、平时就应该注意对产生的数据流向做一个记录，这样好处是，便于自己梳理，更重要的时候无论是初赛还是复赛都会要求提供代码复现最终的成绩，这时候就非常开心的把之前保存下来的记录copy过去。本人这个习惯不是很好，所以在最后1天需要代码评审的时候，各种找，十分浪费时间2、深刻理解每一种评价机制的特性：例如初赛rmse评价方式对于大数很敏感，但是复赛的rmsle的评价方式却对小数敏感。这样，对于数据的观察，和自然的就能找到数据的改进方向。还有如果是rmsle要注意是log的底，不然在本地跑得是测得的成绩很难和真实成绩形成一定的关系，不利于做分析，这个也是被坑过。3、真正的目标很重要，目标明确的迟早决定了最终结果是优秀还是平庸。这次比赛初赛和复赛都有分A/B榜，是否晋级其决定作用的是B榜，但是我们却在整个赛段绝大多数的时间盯着A榜，导致针对B榜的时间太短，有一些想法很难完美的得到验证，后期资源越来越紧张，跑一个SQL需要等几分钟~半小时不等，能跑出结果就很不错了。这个导致我们没有进入决赛。4、最好是组团，不然个人真的很累且很容易陷入困境，初期还可以，人少也没什么问题，毕竟时间比较宽裕，越到后期，反倒越需要人多，因为后期需要快速将一根idea进行验证，单人很难在短时间内搞定。有团队就涉及到团队协作和沟通。包括沟通的工具和沟通的方式。工具的话：用的是slack+issue+钉钉+zoom。slack平时各种思考，零碎的交流想法，即时通信。issue，主要记录每天做的内容，团队成绩，个人探索，重要代码，重要数据，有纪念意义的图片。钉钉用的少，主要是从钉钉群里采集的到信息，偶尔方便讨论。zoom，沟通事情文字效率太低的时候已经要分享内容的时候，这个每次沟时候最好录屏。沟通的方式：主要是灌水式沟通，针对一个问题或者一个想法或者一篇文章，有人抛出来，大家自由回应。5、有交流群一定要加入，1、很有可能就有官方人员，方便各个咨询；2、很多消息都是可以在讨论群里找到；3、一般很多搞技术的都挺热心的，有些问题直接插google或者官方文档不一定那么容易，但是在群里问问会快很多，例如PAI，这个我当时觉得官网或者比赛选手都有介绍在哪儿使用的，结果各种差，找了2天都没有人，原因是太基础了，貌似就没人回答，结果在交流群里问了一下，问题很快就解决了，这个问题之前卡了有2天6、多探索才能比别人走的更远，但最开始还是以常规探索为主，常规探索，不同类型的题网上已经有很多例子了，直接按照例子流程走一遍看看效果。甚至在最开提交答案的时候，提交的baseline版本，提交一版最容易的版本，看看效果，找一下感觉，例如时序的回归问题，就可以按照时序最近的答案提交一版。老司机很可怕，但不用怕，只要比别人探索的更多，成绩肯定会越来越好，在没有思路的时候，停下来，走一走，想一想，这样反而能带来意外的效果，所谓念念不忘，必有回响，在复赛B榜阶段，凌晨1点快要睡着的时候有了新方向。7、比赛是一个重脑力+重体力+中度以上压力的活，越到后面越兴奋，需要有一个好的体力，平时应该加强锻炼，后期几天都是在凌晨1点多之后休息8、能用PAI命令就别用PAI的图形界面，PAI命令可以。大家可以理解为，运行一个功能，选择命令行还是选择图形界面的方式。1、自定义输出表的名称；2、可以很自如很快的选择列，3、可以一次性把所有参数都定义好，不像图形界面，为了某种体验，参数之间设置某种约束，导致效率很低；4、PAI和SQL混合用也很方便；5、还能把PAI命令行保存到本地，复用率高9、多记录，包括过程数据，结果数据，测试数据可以发个issue，把测试结果不断填入，这些数据可以当做以后自己反思的资源，也可以当做以比赛的参考。虽然麻烦一些，但是收益很大。"
+    } ,
+  
+    {
+      "title"    : "XGBoost 参数官方文档翻译",
+      "category" : null,
+      "tags"     : ["jekyll"],
+      "url"      : "/2018/02/28/xgboost_parameters/",
+      "date"     : "2018-02-28 00:00:00 +0800",
+      "content"  : "xgboost参数非常之多，打算借着翻译官方文档理解一下xgboost的相关参数，以下是xgboost官方文档关于参数的全部翻译。XGBoost ParametersBefore running XGboost, we must set three types of parameters: general parameters, booster parameters and task parameters. General parameters relates to which booster we are using to do boosting, commonly tree or linear model Booster parameters depends on which booster you have chosen Learning Task parameters that decides on..."
+    } ,
+  
+    {
+      "title"    : "XGBoost 参数调优(python)",
+      "category" : null,
+      "tags"     : ["jekyll"],
+      "url"      : "/2018/02/28/XGboost_param_share/",
+      "date"     : "2018-02-28 00:00:00 +0800",
+      "content"  : "本篇初步探索了xgboost在调参数的方法背景：数据科学里，首先要对数据特征的提取建模，然后用机器学习模拟预测。目前来说，工业界暂时不清楚，但是在只要涉及数据科学的比赛，机器学习模型肯定少补了Xgboost。Xgboost的参数非常繁多（50多个参数），本次主要介绍如何进行Xgboost调参调参原理：1、利用sklearn的网格搜索GridSearchCV进行调试，但是GridSearchCV无法直接对xgboost进行调试2、利用xgboost的sklearn接口XGBRegressor/XGBClassifier,利用接口，将xgboost的参数带入到GridSearchCV进行遍历调优调参原则：1、参数先粗调再微调2、参数先调对结果影响大的（哪些影响大，可以上网先找找）3、分批次调参Xgboost的参数 General parameters relates to which booster we are using to do boosting, commonly tree or linear model Booster parameters depends on which booster you have chosen Learning Task parameters that decides on the learning scenario, for example, regression tasks may use different parameters with ranking tasks. Command line parameters..."
+    } ,
+  
+    {
+      "title"    : "【转】摄影教训总结",
+      "category" : null,
+      "tags"     : [],
+      "url"      : "/2014/08/26/takephotos/",
+      "date"     : "2014-08-26 00:00:00 +0800",
+      "content"  : "2014 年 8 月 杭州  以人为主体没错，但是要有远有近，拍出来全是脸和上半身也不好。  偶尔兼顾景色，不是所有情况下虚化背景都是加分。  一般情况下色彩鲜艳的衣服拍出来会更好看。  人像镜头不是万能的，大光圈容易虚焦，取景范围影响构图，这些都需要更好地考虑。2014 年 6 月 武汉  照顾好拍摄对象的心情，她开心和配合了，才容易出好片。  如果她真的不愿意拍，就不拍了吧，否则出来基本也是废的。  蓝天白云绿水真的很容易出好片，但是阴天加浑浊的长江边还是不要轻易挑战了。2014 年 3 月 武汉  气氛要活泼一点，不然模特摆拍容易表情僵硬。  光圈优先在室外光线好的情况下容易过曝。  只挑拍得最好的片发给模特看，如果没有出好片，宁愿不发。"
+    } 
+  
+]

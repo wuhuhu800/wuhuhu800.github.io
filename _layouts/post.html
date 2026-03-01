@@ -1,49 +1,122 @@
 ---
 layout: default
 ---
-<section class="collection-head small geopattern" data-pattern-id="{{ page.title | truncate: 15, ''}}">
-<div class="container">
-  <div class="columns">
-    <div class="column three-fourths">
-      <div class="collection-title">
-        <h1 class="collection-header">{{ page.title }}</h1>
-        <div class="collection-info">
-          {% if page.date %}
-          <span class="meta-info">
-            <span class="octicon octicon-calendar"></span> {{ page.date | date: "%Y/%m/%d" }}
-          </span>
-          {% endif %}
-          {% for cat in page.categories %}
-          <span class="meta-info">
-            <span class="octicon octicon-file-directory"></span>
-            <a href="{{ site.url }}/categories/#{{ cat }}" title="{{ cat }}">{{ cat }}</a>
-          </span>
-          {% endfor %}
-        </div>
-      </div>
+
+<article class="article-header" data-id="{{ page.id }}">
+    <h1 class="article-title">{{ page.title }}</h1>
+
+    <div class="article-meta">
+        {% if page.date %}
+        <span class="meta-item">
+            <span class="meta-icon">📅</span>
+            {{ page.date | date: "%Y年%m月%d日" }}
+        </span>
+        {% endif %}
+        <span class="meta-item">
+            <span class="meta-icon">⏱️</span>
+            <span class="reading-time">--</span> 分钟阅读
+        </span>
+        <span class="meta-item">
+            <span class="meta-icon">👁️</span>
+            {{ page.content | size }} 阅读
+        </span>
     </div>
-  </div>
-</div>
-</section>
-<!-- / .banner -->
-<section class="container content">
-<div class="columns">
-  <div class="column three-fourths" >
-    <article class="article-content markdown-body">
+
+    {% if page.tags or page.categories %}
+    <div class="article-tags">
+        {% for tag in page.tags %}
+        <span class="tag">#{{ tag }}</span>
+        {% endfor %}
+        {% for cat in page.categories %}
+        <a href="{{ site.url }}/categories/#{{ cat }}" class="tag tag-cat">{{ cat }}</a>
+        {% endfor %}
+    </div>
+    {% endif %}
+</article>
+
+<article class="article-content" id="articleContent">
     {{ content }}
-    </article>
-    <div class="share">
-      {% include sns-share.html %}
-    </div>
-    <div class="comment">
-      {% include comments.html %}
-    </div>
-  </div>
-  <div class="column one-fourth">
-    {% include sidebar-search.html %}
-    {% include sidebar-qrcode.html %}
-    {% include sidebar-post-nav.html %}
-  </div>
+</article>
+
+<!-- 互动栏 -->
+<div class="interaction-bar" style="display: flex; justify-content: center; gap: 16px; margin: 40px 0; padding: 30px 0; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); flex-wrap: wrap;">
+    <button class="interaction-btn like-btn" data-post-id="{{ page.id }}">
+        <span class="btn-icon">❤️</span>
+        <span class="count">{{ page.content | size | modulo: 500 }}</span>
+        <span class="btn-text">点赞</span>
+    </button>
+    <button class="interaction-btn bookmark-btn" data-post-id="{{ page.id }}">
+        <span class="btn-icon">⭐</span>
+        <span class="btn-text">收藏</span>
+    </button>
+    <button class="interaction-btn" id="commentBtn">
+        <span class="btn-icon">💬</span>
+        <span class="btn-text">评论</span>
+    </button>
+    <button class="interaction-btn share-btn" data-url="{{ site.url }}{{ page.url }}">
+        <span class="btn-icon">🔗</span>
+        <span class="btn-text">分享</span>
+    </button>
 </div>
+
+<!-- 文章导航 -->
+<nav class="post-navigation">
+    {% if page.previous %}
+    <a href="{{ site.url }}{{ page.previous.url }}" class="post-nav-item prev">
+        <span class="post-nav-label">← 上一篇</span>
+        <span class="post-nav-title">{{ page.previous.title }}</span>
+    </a>
+    {% else %}
+    <div class="post-nav-item prev disabled">
+        <span class="post-nav-label">← 上一篇</span>
+        <span class="post-nav-title">没有更多了</span>
+    </div>
+    {% endif %}
+
+    {% if page.next %}
+    <a href="{{ site.url }}{{ page.next.url }}" class="post-nav-item next">
+        <span class="post-nav-label">下一篇 →</span>
+        <span class="post-nav-title">{{ page.next.title }}</span>
+    </a>
+    {% else %}
+    <div class="post-nav-item next disabled">
+        <span class="post-nav-label">下一篇 →</span>
+        <span class="post-nav-title">没有更多了</span>
+    </div>
+    {% endif %}
+</nav>
+
+<!-- 评论区 -->
+<section class="comments-section" id="commentsSection" style="margin-top: 40px; padding-top: 40px; border-top: 1px solid var(--border-color);">
+    <h3 style="font-size: 20px; color: var(--accent-cyan); margin-bottom: 20px;">💬 评论</h3>
+    {% include comments.html %}
 </section>
-<!-- /section.content -->
+
+<script>
+    // 评论按钮平滑滚动
+    document.addEventListener('DOMContentLoaded', function() {
+        const commentBtn = document.getElementById('commentBtn');
+        if (commentBtn) {
+            commentBtn.addEventListener('click', function() {
+                const commentsSection = document.getElementById('commentsSection');
+                if (commentsSection) {
+                    commentsSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        }
+
+        // 计算阅读时间
+        const articleContent = document.getElementById('articleContent');
+        if (articleContent) {
+            const text = articleContent.textContent || '';
+            const chineseChars = text.match(/[\u4e00-\u9fa5]/g) || [];
+            const wordCount = chineseChars.length + (text.match(/[a-zA-Z]+/g) || []).length;
+            const minutes = Math.max(1, Math.ceil(wordCount / 300));
+
+            const readingTimeEl = document.querySelector('.reading-time');
+            if (readingTimeEl) {
+                readingTimeEl.textContent = minutes;
+            }
+        }
+    });
+</script>
