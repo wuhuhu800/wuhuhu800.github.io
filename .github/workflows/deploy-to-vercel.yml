@@ -1,26 +1,26 @@
 name: Deploy to Vercel
 
-  "on":
-    push:
-      branches: [master, main]
+on:
+  push:
+    branches: [master, main]
 
-  env:
-    VERCEL_ORG_ID: team_yA2rZYLTYpOwxXgZGf9ydSOZ
-    VERCEL_PROJECT_ID: prj_8P74vRhm4V9jl7LsAdoUGk90q9Cp
+env:
+  VERCEL_ORG_ID: team_yA2rZYLTYpOwxXgZGf9ydSOZ
+  VERCEL_PROJECT_ID: prj_8P74vRhm4V9jl7LsAdoUGk90q9Cp
 
-  jobs:
-    deploy:
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v4
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-        - uses: ruby/setup-ruby@v1
-          with:
-            ruby-version: '3.1'
-            bundler-cache: true
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          bundler-cache: true
 
-        - run: bundle exec jekyll build --destination ./_site
+      - run: bundle exec jekyll build --destination ./_site
 
-        - run: npm install -g vercel
+      - run: npm install -g vercel
 
-        - run: vercel --token=${{ secrets.VERCEL_TOKEN }} --prod --yes --cwd ./_site
+      - run: vercel --token=${{ secrets.VERCEL_TOKEN }} --prod --yes --cwd ./_site
