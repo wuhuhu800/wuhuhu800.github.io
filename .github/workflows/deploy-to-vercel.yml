@@ -1,6 +1,6 @@
 name: Deploy to Vercel
 
-  on:
+  "on":
     push:
       branches: [master, main]
 
